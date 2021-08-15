@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "255539310592",
+    "project_id": "sneakerx-28e9d",
+    "storage_bucket": "sneakerx-28e9d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255539310592:android:130e0a91cedb666e9b28e5",
+        "android_client_info": {
+          "package_name": "com.aditya.sneakerx"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "255539310592-aqrimrujt3nbv01t7n40fioa7ouu4o6a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aditya.sneakerx",
+            "certificate_hash": "ca1bc99e500bfb252e42b61dcb8f16d37ae9e0ed"
+          }
+        },
+        {
+          "client_id": "255539310592-t5qsv42lgq30dnnhbh4cu4uph3toiuq5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDe9tXeiDl2N8jguawEuTAesFGZZ4g3Lyc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "255539310592-t5qsv42lgq30dnnhbh4cu4uph3toiuq5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
