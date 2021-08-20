@@ -6,8 +6,8 @@ import 'package:sneakerx/services/AuthenticationService.dart';
 import '../constants.dart';
 
 class SignIn extends StatefulWidget {
-  final Function? toggleView;
-  SignIn({this.toggleView});
+  final Function toggleView;
+  SignIn({required this.toggleView});
   @override
   _SignInState createState() => _SignInState();
 }
@@ -85,6 +85,7 @@ class _SignInState extends State<SignIn> {
                   },
                   validator: (val) =>
                       val!.isEmpty ? "Please Enter your email" : null,
+                  autofocus: true,
                   decoration: textInputDecoration.copyWith(hintText: "Email"),
                 ),
                 SizedBox(height: 10),
@@ -151,8 +152,7 @@ class _SignInState extends State<SignIn> {
                   children: [
                     TextButton(
                         onPressed: () {
-                          WidgetsBinding.instance!
-                              .addPostFrameCallback((widget.toggleView!()));
+                          widget.toggleView();
                         },
                         child: Text("New User?")),
                     TextButton(

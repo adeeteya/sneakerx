@@ -8,8 +8,6 @@ import 'package:sneakerx/screens/verification.dart';
 import 'screens/home.dart';
 
 class Wrapper extends StatefulWidget {
-  const Wrapper({Key? key}) : super(key: key);
-
   @override
   _WrapperState createState() => _WrapperState();
 }
@@ -25,7 +23,6 @@ class _WrapperState extends State<Wrapper> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User?>(context);
-
     if (user == null) {
       if (showSignIn)
         return SignIn(toggleView: toggleView);

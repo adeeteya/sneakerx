@@ -3,7 +3,7 @@ description: A Sneaker Shopping App.
 
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 2.0.0+1
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -13,9 +13,10 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  firebase_core: ^1.4.0
-  firebase_auth: ^3.0.1
-  provider: ^5.0.0
+  firebase_core: ^1.5.0
+  firebase_auth: ^3.0.2
+  cloud_firestore: ^2.5.0
+  provider: ^6.0.0
   url_launcher: ^6.0.9
   lottie: ^1.1.0
 
@@ -27,7 +28,6 @@ flutter:
 
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
     - assets/lottie/

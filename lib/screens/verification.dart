@@ -6,8 +6,8 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class Verification extends StatefulWidget {
-  final Function? toggleView;
-  Verification({this.toggleView});
+  final Function toggleView;
+  Verification({required this.toggleView});
 
   @override
   _VerificationState createState() => _VerificationState();
@@ -20,7 +20,7 @@ class _VerificationState extends State<Verification> {
     await user!.reload();
     if (user!.emailVerified) {
       timer.cancel();
-      widget.toggleView!();
+      widget.toggleView();
     }
   }
 

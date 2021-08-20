@@ -9,8 +9,8 @@ import 'package:sneakerx/services/AuthenticationService.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Register extends StatefulWidget {
-  final Function? toggleView;
-  Register({this.toggleView});
+  final Function toggleView;
+  Register({required this.toggleView});
   @override
   _RegisterState createState() => _RegisterState();
 }
@@ -82,6 +82,7 @@ class _RegisterState extends State<Register> {
                   },
                   validator: (val) =>
                       val!.isEmpty ? "Please Enter your email" : null,
+                  autofocus: true,
                   decoration: textInputDecoration.copyWith(hintText: "Email"),
                 ),
                 SizedBox(height: 10),
@@ -198,8 +199,7 @@ class _RegisterState extends State<Register> {
                 ),
                 TextButton(
                     onPressed: () {
-                      WidgetsBinding.instance!
-                          .addPostFrameCallback((widget.toggleView!()));
+                      widget.toggleView();
                     },
                     child: Text("Already have a account?")),
               ],

@@ -1,7 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sneakerx/services/FirestoreService.dart';
 
 class AuthenticationService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  User? getUser() {
+    return _auth.currentUser;
+  }
+
   Future signInWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
@@ -21,6 +27,7 @@ class AuthenticationService {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
       User? user = userCredential.user;
+      FirestoreService().createUserDetails();
       return user;
     } catch (e) {
       print(e);
