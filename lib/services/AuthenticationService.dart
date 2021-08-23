@@ -44,5 +44,9 @@ class AuthenticationService {
     }
   }
 
+  Future signOut() async {
+    await _auth.signOut();
+  }
+
   Stream<User?> get onAuthStateChanged => _auth.userChanges();
 }

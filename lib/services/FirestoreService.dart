@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:sneakerx/models/ProductModel.dart';
@@ -147,7 +146,7 @@ class FirestoreService {
         await _instance.collection("users").doc(userId).get();
     Map<String, dynamic> userCreatedData =
         _documentSnapshot.data() as Map<String, dynamic>;
-    List productsList = userCreatedData['products'];
+    List productsList = userCreatedData['products'] ?? [];
     productsList.add(_productsReference.id);
     await _instance
         .collection('users')
@@ -156,11 +155,25 @@ class FirestoreService {
     await _productsReference.update({'images': data.images});
   }
 
-  Future getProfilePicture() async {
-    DocumentSnapshot userData =
+  Future deleteProduct(String productId) async {
+    //delete images from storage
+    final _firebaseStorage = FirebaseStorage.instance;
+    Map<String, dynamic> productData = await getProductDetails(productId);
+    List imagesUrl = productData['images'];
+    print(imagesUrl);
+    for (int i = 0; i < imagesUrl.length; i++) {
+      await _firebaseStorage.refFromURL(imagesUrl[i]).delete();
+    }
+    //delete user data
+    DocumentSnapshot documentSnapshot =
         await _instance.collection('users').doc(userId).get();
-    final profilePictureUrl = userData.get('pfp');
-    return profilePictureUrl;
+    List productsList = documentSnapshot.get('products');
+    productsList.remove(productId);
+    _instance
+        .collection('users')
+        .doc(userId)
+        .update({'products': productsList});
+    await _instance.collection('products').doc(productId).delete();
   }
 
   Stream<QuerySnapshot> get productStream =>
@@ -170,20 +183,3 @@ class FirestoreService {
   Stream<QuerySnapshot> get cartStream =>
       _instance.collection('users').doc(userId).collection('cart').snapshots();
 }
-
-/*Used for updating data in case of image change
-  void updateData() async {
-    QuerySnapshot<Map<String, dynamic>> querySnapshot =
-        await _instance.collection("products").get();
-    CollectionReference productsRef = _instance.collection('products');
-    querySnapshot.docs.forEach((doc) {
-      productsRef.doc(doc.id).update({
-        'images': [
-          'https://firebasestorage.googleapis.com/v0/b/sneakerx-28e9d.appspot.com/o/adidas%20human%20race-yellow.png?alt=media&token=9e483ca9-8831-4cbe-b465-57efe815ace6',
-          'https://firebasestorage.googleapis.com/v0/b/sneakerx-28e9d.appspot.com/o/adidas%20human%20race-teal.png?alt=media&token=f5174839-d270-4b1e-b50f-d24e7b1bd4e4',
-          'https://firebasestorage.googleapis.com/v0/b/sneakerx-28e9d.appspot.com/o/adidas%20human%20race-red.png?alt=media&token=0311e596-e456-4e9b-868d-a0fad871e586'
-        ]
-      });
-    });
-  }
- */

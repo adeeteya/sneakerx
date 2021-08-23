@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sneakerx/screens/product_page.dart';
 import 'package:sneakerx/screens/profile_page.dart';
+import 'package:sneakerx/services/AuthenticationService.dart';
 import 'package:sneakerx/services/FirestoreService.dart';
 import 'package:sneakerx/widgets/ProductCard.dart';
 import 'add_item_page.dart';
@@ -15,6 +16,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final _firestoreInstance = FirestoreService();
+  final _user = AuthenticationService().getUser();
   Future showCartItems() async {
     List<String> imageUrls = await _firestoreInstance.getLastTwoCartImages();
     ScaffoldMessenger.of(context).clearSnackBars();
@@ -102,29 +104,21 @@ class _HomeState extends State<Home> {
                                   MaterialPageRoute(
                                       builder: (context) => ProfilePage()));
                             },
-                            child: FutureBuilder(
-                                future: _firestoreInstance.getProfilePicture(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.done) {
-                                    if (snapshot.data != null) {
-                                      return Hero(
-                                        tag: 'User Profile Image',
-                                        child: CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                              snapshot.data as String),
-                                        ),
-                                      );
-                                    }
-                                  }
-                                  return Hero(
-                                    tag: 'User Avatar Image',
+                            child: (_user?.photoURL != null)
+                                ? Hero(
+                                    tag: 'User Profile Image',
                                     child: CircleAvatar(
-                                      backgroundImage:
-                                          AssetImage("assets/user.png"),
-                                    ),
-                                  );
-                                }),
+                                        radius: 64,
+                                        backgroundImage: NetworkImage(
+                                            _user?.photoURL ?? "")),
+                                  )
+                                : Hero(
+                                    tag: 'User Profile Image',
+                                    child: CircleAvatar(
+                                        radius: 64,
+                                        backgroundImage:
+                                            AssetImage("assets/user.png")),
+                                  ),
                           ),
                           expandedHeight: 120,
                           pinned: true,
