@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sneakerx/loading.dart';
 import 'package:sneakerx/services/FirestoreService.dart';
 import 'package:sneakerx/widgets/CartBottomBar.dart';
 import 'package:sneakerx/widgets/CartListTile.dart';
@@ -24,7 +23,8 @@ class _CartPageState extends State<CartPage> {
             return Center(child: Text("${snapshot.error}"));
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Loading();
+            return Center(
+                child: CircularProgressIndicator(color: Color(0xFF1A191C)));
           }
           List<DocumentSnapshot> cartItemsSnapshot = snapshot.data!.docs;
           List<Map<String, dynamic>> cartItems = [];
@@ -38,16 +38,7 @@ class _CartPageState extends State<CartPage> {
             String chosenColor = productId.substring(0, splitPos); //color
             int chosenSize = 0; //chosenSize int
             String sizeText = productId[splitPos + 1];
-            if (productId[splitPos + 2] == '0' ||
-                productId[splitPos + 2] == '1' ||
-                productId[splitPos + 2] == '2' ||
-                productId[splitPos + 2] == '3' ||
-                productId[splitPos + 2] == '4' ||
-                productId[splitPos + 2] == '5' ||
-                productId[splitPos + 2] == '6' ||
-                productId[splitPos + 2] == '7' ||
-                productId[splitPos + 2] == '8' ||
-                productId[splitPos + 2] == '9') {
+            if (double.tryParse(productId[0]) != null) {
               sizeText += productId[splitPos + 2];
               chosenSize = int.parse(sizeText);
               productId = productId.substring(splitPos + 3);
@@ -63,7 +54,6 @@ class _CartPageState extends State<CartPage> {
             });
             cartItems.add(cartItem);
           }
-
           return Column(
             children: [
               Expanded(

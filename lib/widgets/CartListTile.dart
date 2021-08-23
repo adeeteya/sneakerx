@@ -34,7 +34,6 @@ class _CartListTileState extends State<CartListTile> {
             return Center(child: Text("${snapshot.error}"));
           }
           Map<String, dynamic>? data = snapshot.data;
-          //data!['price'] * widget.quantity;
           return Row(
             children: [
               Expanded(
@@ -80,8 +79,8 @@ class _CartListTileState extends State<CartListTile> {
                         Row(
                           children: [
                             IconButton(
-                                onPressed: () {
-                                  _fireStoreInstance.decrementQuantity(
+                                onPressed: () async {
+                                  await _fireStoreInstance.decrementQuantity(
                                       widget.productId,
                                       color: widget.chosenColor,
                                       size: widget.chosenSize,
@@ -94,8 +93,9 @@ class _CartListTileState extends State<CartListTile> {
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             IconButton(
-                              onPressed: () {
-                                _fireStoreInstance.addToCart(widget.productId,
+                              onPressed: () async {
+                                await _fireStoreInstance.addToCart(
+                                    widget.productId,
                                     color: widget.chosenColor,
                                     size: widget.chosenSize,
                                     price: data['price']);

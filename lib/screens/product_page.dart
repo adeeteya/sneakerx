@@ -34,9 +34,8 @@ class _ProductPageState extends State<ProductPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFAAA6D6),
-      body: FutureBuilder<Map<String, dynamic>?>(
-        future: _instance.getProduct(widget.productId),
-        initialData: null,
+      body: FutureBuilder<Map<String, dynamic>>(
+        future: _instance.getProductDetails(widget.productId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
@@ -54,7 +53,9 @@ class _ProductPageState extends State<ProductPage> {
                     flex: 2,
                     child: Stack(
                       children: [
-                        ImageSwipeView(imagesList: documentData['images']),
+                        ImageSwipeView(
+                            imagesList: documentData['images'],
+                            productId: widget.productId),
                         CustomAppBar(productId: widget.productId),
                       ],
                     ),

@@ -80,6 +80,7 @@ class _SignInState extends State<SignIn> {
                 ),
                 SizedBox(height: 30),
                 TextFormField(
+                  textInputAction: TextInputAction.next,
                   onChanged: (val) {
                     _email = val;
                   },

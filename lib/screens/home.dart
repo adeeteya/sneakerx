@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sneakerx/screens/add_item_page.dart';
 import 'package:sneakerx/screens/product_page.dart';
+import 'package:sneakerx/screens/profile_page.dart';
 import 'package:sneakerx/services/FirestoreService.dart';
 import 'package:sneakerx/widgets/ProductCard.dart';
-
+import 'add_item_page.dart';
 import 'cart_page.dart';
 
 class Home extends StatefulWidget {
@@ -15,39 +15,48 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final _firestoreInstance = FirestoreService();
-  final _snackBar = SnackBar(
-    content: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text('Cart', style: TextStyle(fontSize: 18)),
-        Row(
-          children: [
-            CircleAvatar(backgroundColor: Colors.white),
-            SizedBox(width: 8),
-            CircleAvatar(backgroundColor: Colors.white),
-            SizedBox(width: 8),
-            Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: Color(0xFFF68A0A)),
-                  shape: BoxShape.circle),
-              child: IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.arrow_forward_rounded,
-                  color: Color(0xFFFAF5FC),
+  Future showCartItems() async {
+    List<String> imageUrls = await _firestoreInstance.getLastTwoCartImages();
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('Cart', style: TextStyle(fontSize: 18)),
+          Row(
+            children: [
+              (imageUrls.isNotEmpty)
+                  ? CircleAvatar(backgroundImage: NetworkImage(imageUrls[0]))
+                  : SizedBox(),
+              SizedBox(width: 8),
+              (imageUrls.length == 2)
+                  ? CircleAvatar(backgroundImage: NetworkImage(imageUrls[1]))
+                  : SizedBox(),
+              SizedBox(width: 8),
+              Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Color(0xFFF68A0A)),
+                    shape: BoxShape.circle),
+                child: IconButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => CartPage()));
+                  },
+                  icon: Icon(
+                    Icons.arrow_forward_rounded,
+                    color: Color(0xFFFAF5FC),
+                  ),
                 ),
               ),
-            ),
-          ],
-        )
-      ],
-    ),
-    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-    duration: Duration(seconds: 5),
-    backgroundColor: Color(0xFF1A191C),
-  );
-  void showCartItems() {
-    ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+            ],
+          )
+        ],
+      ),
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      duration: Duration(seconds: 3),
+      backgroundColor: Color(0xFF1A191C),
+    ));
   }
 
   bool _showFavorites = false;
@@ -86,8 +95,36 @@ class _HomeState extends State<Home> {
                         SliverAppBar(
                           backgroundColor: Color(0xFFF4F5FC),
                           elevation: 0,
-                          leading: CircleAvatar(
-                            backgroundImage: AssetImage("assets/user.png"),
+                          leading: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ProfilePage()));
+                            },
+                            child: FutureBuilder(
+                                future: _firestoreInstance.getProfilePicture(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.done) {
+                                    if (snapshot.data != null) {
+                                      return Hero(
+                                        tag: 'User Profile Image',
+                                        child: CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                              snapshot.data as String),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                  return Hero(
+                                    tag: 'User Avatar Image',
+                                    child: CircleAvatar(
+                                      backgroundImage:
+                                          AssetImage("assets/user.png"),
+                                    ),
+                                  );
+                                }),
                           ),
                           expandedHeight: 120,
                           pinned: true,
@@ -221,6 +258,7 @@ class _HomeState extends State<Home> {
                                           imageUrl: data['images'][0],
                                           defaultSize: data['sizes'][0],
                                           defaultColor: data['colors'][0],
+                                          showCartItems: showCartItems,
                                           isFavorite: true,
                                         ),
                                       );
@@ -255,6 +293,7 @@ class _HomeState extends State<Home> {
                                       imageUrl: data['images'][0],
                                       defaultSize: data['sizes'][0],
                                       defaultColor: data['colors'][0],
+                                      showCartItems: showCartItems,
                                       isFavorite: favoritesList
                                           .contains(productSnapshot.id),
                                     ),

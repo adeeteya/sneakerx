@@ -11,15 +11,17 @@ class ProductCard extends StatefulWidget {
   final int defaultSize;
   final String defaultColor;
   final bool isFavorite;
+  final Function showCartItems;
   ProductCard(
-      {this.productId = "",
-      this.brand = "",
-      this.name = "",
-      this.imageUrl = "",
-      this.price = 0,
-      this.defaultSize = 6,
-      this.defaultColor = "white",
-      this.isFavorite = false});
+      {required this.productId,
+      required this.brand,
+      required this.name,
+      required this.imageUrl,
+      required this.price,
+      required this.defaultSize,
+      required this.defaultColor,
+      required this.isFavorite,
+      required this.showCartItems});
 
   @override
   _ProductCardState createState() => _ProductCardState();
@@ -62,6 +64,8 @@ class _ProductCardState extends State<ProductCard> {
                     IconButton(
                         onPressed: () async {
                           await addToCart();
+                          await Future.delayed(Duration(milliseconds: 100));
+                          await widget.showCartItems();
                         },
                         icon: Icon(Icons.add, color: Color(0xFFF68A0A)))
                   ],
@@ -71,10 +75,13 @@ class _ProductCardState extends State<ProductCard> {
                   flex: 3,
                   child: Container(
                     padding: EdgeInsets.only(left: 8, right: 8),
-                    child: FadeInImage.assetNetwork(
-                        fit: BoxFit.contain,
-                        placeholder: "assets/loading.gif",
-                        image: widget.imageUrl),
+                    child: Hero(
+                      tag: widget.productId,
+                      child: FadeInImage.assetNetwork(
+                          fit: BoxFit.contain,
+                          placeholder: "assets/loading.gif",
+                          image: widget.imageUrl),
+                    ),
                   )),
               Expanded(
                   flex: 1,
@@ -88,6 +95,7 @@ class _ProductCardState extends State<ProductCard> {
                   flex: 1,
                   child: Text("\$${widget.price}",
                       style: TextStyle(
+                          fontSize: 16,
                           color: Color(0xFFF68A0A),
                           fontWeight: FontWeight.bold)))
             ],

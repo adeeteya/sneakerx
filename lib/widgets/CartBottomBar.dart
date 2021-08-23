@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sneakerx/services/FirestoreService.dart';
 
@@ -17,38 +18,38 @@ class _CartBottomBarState extends State<CartBottomBar> {
     return StreamBuilder<DocumentSnapshot>(
         stream: _firestoreInstance.userData,
         builder: (context, snapshot) {
-          print("cart bottom bar entered");
-          print(snapshot.connectionState);
           if (snapshot.connectionState == ConnectionState.active) {
             Map<String, dynamic> userFavoritesData =
                 snapshot.data!.data() as Map<String, dynamic>;
             _total = userFavoritesData['total'];
-            print(_total);
             return Container(
               color: Colors.transparent,
               padding: EdgeInsets.fromLTRB(16, 10, 16, 30),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text("Total",
-                          style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold)),
-                      (widget.noOfItems == 0 || snapshot.hasError)
-                          ? Text("\$0",
-                              style: TextStyle(
-                                  fontSize: 22, fontWeight: FontWeight.bold))
-                          : (widget.noOfItems == 1)
-                              ? Text("(${widget.noOfItems}item) \$$_total",
-                                  style: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.bold))
-                              : Text("(${widget.noOfItems}items) \$$_total",
-                                  style: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.bold))
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Total",
+                            style: TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.bold)),
+                        (widget.noOfItems == 0 || snapshot.hasError)
+                            ? Text("\$0",
+                                style: TextStyle(
+                                    fontSize: 22, fontWeight: FontWeight.bold))
+                            : (widget.noOfItems == 1)
+                                ? Text("(${widget.noOfItems}item) \$$_total",
+                                    style: TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold))
+                                : Text("(${widget.noOfItems}items) \$$_total",
+                                    style: TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold))
+                      ],
+                    ),
                   ),
                   SizedBox(height: 20),
                   Container(

@@ -77,6 +77,7 @@ class _RegisterState extends State<Register> {
                 ),
                 SizedBox(height: 30),
                 TextFormField(
+                  textInputAction: TextInputAction.next,
                   onChanged: (val) {
                     _email = val;
                   },
@@ -88,6 +89,7 @@ class _RegisterState extends State<Register> {
                 SizedBox(height: 10),
                 TextFormField(
                   obscureText: _hiddenPassword,
+                  textInputAction: TextInputAction.next,
                   onChanged: (val) {
                     _password = val;
                   },
@@ -120,7 +122,7 @@ class _RegisterState extends State<Register> {
                       hintText: "Re-enter Password",
                     )),
                 SizedBox(height: 5),
-                Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
                   Checkbox(
                     value: _agree,
                     activeColor: Color(0xFFF68A0A),

@@ -31,6 +31,8 @@ class _AppState extends State<App> {
         title: "Sneaker Store",
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          colorScheme:
+              ThemeData().colorScheme.copyWith(primary: Color(0xFFF68A0A)),
           appBarTheme: AppBarTheme(
             elevation: 0,
             color: Color(0xFFF4F5FC),

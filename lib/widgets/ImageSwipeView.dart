@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ImageSwipeView extends StatefulWidget {
-  final List? imagesList;
-  ImageSwipeView({this.imagesList});
+  final List imagesList;
+  final String productId;
+  ImageSwipeView({required this.imagesList, required this.productId});
   @override
   _ImageSwipeViewState createState() => _ImageSwipeViewState();
 }
@@ -22,11 +23,14 @@ class _ImageSwipeViewState extends State<ImageSwipeView> {
               });
             },
             children: [
-              for (int i = 0; i < widget.imagesList!.length; i++)
-                FadeInImage.assetNetwork(
-                    fit: BoxFit.contain,
-                    placeholder: "assets/loading_2.gif",
-                    image: widget.imagesList![i]),
+              for (int i = 0; i < widget.imagesList.length; i++)
+                Hero(
+                  tag: widget.productId,
+                  child: FadeInImage.assetNetwork(
+                      fit: BoxFit.contain,
+                      placeholder: "assets/loading_2.gif",
+                      image: widget.imagesList[i]),
+                ),
             ],
           ),
           Positioned(
@@ -34,7 +38,7 @@ class _ImageSwipeViewState extends State<ImageSwipeView> {
             left: 0,
             right: 0,
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              for (int i = 0; i < widget.imagesList!.length; i++)
+              for (int i = 0; i < widget.imagesList.length; i++)
                 AnimatedContainer(
                   curve: Curves.easeOutCubic,
                   width: (i == _selectedPage) ? 30 : 10,

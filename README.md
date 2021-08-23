@@ -1,6 +1,6 @@
 # sneakerx
 
-A nSneaker Shopping App.
+A Sneaker Shopping App.
 
 ## Getting Started
 

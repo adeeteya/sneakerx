@@ -1,18 +1,26 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:sneakerx/models/ProductModel.dart';
 import 'package:sneakerx/services/AuthenticationService.dart';
 
 class FirestoreService {
   final FirebaseFirestore _instance = FirebaseFirestore.instance;
   final String userId = AuthenticationService().getUser()!.uid;
 
-  Future<Map<String, dynamic>?> getProduct(String productId) async {
-    DocumentSnapshot<Map<String, dynamic>> documentData =
+  Future createUserDetails() async {
+    await _instance
+        .collection('users')
+        .doc(userId)
+        .set({'total': 0, 'favorites': []});
+  }
+
+  Future<Map<String, dynamic>> getProductDetails(String productId) async {
+    DocumentSnapshot documentSnapshot =
         await _instance.collection("products").doc(productId).get();
-    if (documentData.exists) {
-      return documentData.data();
-    } else {
-      return null;
-    }
+    Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
+    return data;
   }
 
   Future addToCart(String productId,
@@ -40,9 +48,12 @@ class FirestoreService {
         Map<String, dynamic> data =
             documentSnapshot.data() as Map<String, dynamic>;
         int quantity = data['quantity'] + 1;
-        await _cartReference.doc(newProductId).update({'quantity': quantity});
+        await _cartReference.doc(newProductId).update(
+            {'quantity': quantity, 'timeStamp': FieldValue.serverTimestamp()});
       } else {
-        await _cartReference.doc(newProductId).set({'quantity': 1});
+        await _cartReference
+            .doc(newProductId)
+            .set({'quantity': 1, 'timeStamp': FieldValue.serverTimestamp()});
       }
     });
   }
@@ -95,18 +106,61 @@ class FirestoreService {
         .set({"favorites": favoritesList}, SetOptions(merge: true));
   }
 
-  Future<Map<String, dynamic>> getProductDetails(String productId) async {
-    DocumentSnapshot documentSnapshot =
-        await _instance.collection("products").doc(productId).get();
-    Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
-    return data;
+  Future<List<String>> getLastTwoCartImages() async {
+    List<String> imageUrls = [];
+    QuerySnapshot _querySnapshot = await _instance
+        .collection("users")
+        .doc(userId)
+        .collection('cart')
+        .orderBy('timeStamp', descending: true)
+        .limit(2)
+        .get();
+    for (int i = 0; i < _querySnapshot.docs.length; i++) {
+      String productId = _querySnapshot.docs.elementAt(i).id;
+      productId = productId.substring(productId.indexOf('0') + 2);
+      if (double.tryParse(productId[0]) != null) {
+        productId = productId.substring(1);
+      }
+      Map<String, dynamic> productData = await getProductDetails(productId);
+      imageUrls.add(productData['images'][0]);
+    }
+    return imageUrls;
   }
 
-  Future createUserDetails() async {
+  Future addProduct(Product data, List<File> images) async {
+    DocumentReference _productsReference =
+        await _instance.collection('products').add({
+      'brand': data.brand,
+      'name': data.name,
+      'price': data.price,
+      'sizes': data.sizes,
+      'colors': data.colors
+    });
+    for (int i = 0; i < images.length; i++) {
+      Reference ref =
+          FirebaseStorage.instance.ref('products/${_productsReference.id}/$i');
+      await ref.putFile(images[i]);
+      String url = await ref.getDownloadURL();
+      data.images!.add(url);
+    }
+    DocumentSnapshot _documentSnapshot =
+        await _instance.collection("users").doc(userId).get();
+    Map<String, dynamic> userCreatedData =
+        _documentSnapshot.data() as Map<String, dynamic>;
+    List productsList = userCreatedData['products'];
+    productsList.add(_productsReference.id);
     await _instance
         .collection('users')
         .doc(userId)
-        .set({'total': 0, 'favorites': []});
+        .update({'products': productsList});
+    await _productsReference.update({'images': data.images});
+  }
+
+  Future getProfilePicture() async {
+    DocumentSnapshot userData =
+        await _instance.collection('users').doc(userId).get();
+    final profilePictureUrl = userData.get('pfp');
+    return profilePictureUrl;
   }
 
   Stream<QuerySnapshot> get productStream =>
@@ -115,6 +169,8 @@ class FirestoreService {
       _instance.collection('users').doc(userId).snapshots();
   Stream<QuerySnapshot> get cartStream =>
       _instance.collection('users').doc(userId).collection('cart').snapshots();
+}
+
 /*Used for updating data in case of image change
   void updateData() async {
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
@@ -131,4 +187,3 @@ class FirestoreService {
     });
   }
  */
-}
