@@ -30,9 +30,7 @@ class ProductCard extends StatefulWidget {
 class _ProductCardState extends State<ProductCard> {
   Future addToCart() async {
     await FirestoreService().addToCart(widget.productId,
-        color: widget.defaultColor,
-        size: widget.defaultSize,
-        price: widget.price);
+        color: widget.defaultColor, size: widget.defaultSize);
   }
 
   Future toggleFavorite() async {

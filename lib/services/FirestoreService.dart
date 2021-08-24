@@ -12,7 +12,7 @@ class FirestoreService {
     await _instance
         .collection('users')
         .doc(userId)
-        .set({'total': 0, 'favorites': []});
+        .set({'favorites': [], 'products': []});
   }
 
   Future<Map<String, dynamic>> getProductDetails(String productId) async {
@@ -22,20 +22,9 @@ class FirestoreService {
     return data;
   }
 
-  Future addToCart(String productId,
-      {String color = '', int size = 0, int price = 0}) async {
+  Future addToCart(String productId, {String color = '', int size = 0}) async {
     CollectionReference _cartReference =
         _instance.collection("users").doc(userId).collection("cart");
-    DocumentSnapshot _documentSnapshot =
-        await _instance.collection("users").doc(userId).get();
-    Map<String, dynamic> totalData =
-        _documentSnapshot.data() as Map<String, dynamic>;
-    totalData['total'] =
-        (totalData.keys.contains('total') ? totalData['total'] : 0) + price;
-    await _instance
-        .collection('users')
-        .doc(userId)
-        .update({'total': totalData['total']});
     String newProductId = color + "0$size" + productId;
     DocumentReference _documentReference = _instance
         .collection("users")
@@ -58,19 +47,9 @@ class FirestoreService {
   }
 
   Future decrementQuantity(String productId,
-      {String color = '', int size = 0, int price = 0}) async {
+      {String color = '', int size = 0}) async {
     CollectionReference _cartReference =
         _instance.collection("users").doc(userId).collection("cart");
-    DocumentSnapshot _documentSnapshot =
-        await _instance.collection("users").doc(userId).get();
-    Map<String, dynamic> totalData =
-        _documentSnapshot.data() as Map<String, dynamic>;
-    totalData['total'] = totalData['total'] - price;
-    await _instance
-        .collection('users')
-        .doc(userId)
-        .update({'total': totalData['total']});
-
     String newProductId = color + "0$size" + productId;
     DocumentReference _documentReference = _instance
         .collection("users")

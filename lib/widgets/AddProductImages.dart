@@ -42,7 +42,9 @@ class _AddProductImagesState extends State<AddProductImages> {
           }
           return Container(
             width: 150,
-            color: Colors.black12,
+            margin: EdgeInsets.only(left: 5),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12), color: Colors.black12),
             child: IconButton(
                 onPressed: () async {
                   final image =

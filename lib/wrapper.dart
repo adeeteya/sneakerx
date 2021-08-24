@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:sneakerx/screens/register.dart';
 import 'package:sneakerx/screens/signin.dart';
 import 'package:sneakerx/screens/verification.dart';
-
 import 'screens/home.dart';
 
 class Wrapper extends StatefulWidget {

@@ -15,13 +15,11 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   final _instance = FirestoreService();
-  int _selectedSize = 6;
-  String _selectedColor = "white";
-  int _price = 0;
-
+  int _selectedSize = 0;
+  String _selectedColor = "";
   void addToCart() async {
     await _instance.addToCart(widget.productId,
-        size: _selectedSize, color: _selectedColor, price: _price);
+        size: _selectedSize, color: _selectedColor);
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text("Product Added To Cart")));
   }
@@ -46,7 +44,6 @@ class _ProductPageState extends State<ProductPage> {
               Map<String, dynamic>? documentData = snapshot.data;
               _selectedColor = documentData!['colors'][0];
               _selectedSize = documentData['sizes'][0];
-              _price = documentData['price'];
               return Column(
                 children: [
                   Expanded(
