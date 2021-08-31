@@ -4,7 +4,7 @@ A Sneaker Shopping App made with flutter.
 
 ## Stuff I learnt 
 
-> Learnt to use futures and await
+> Learnt to handle futures and async code
 
 > Handling Firebase Authentication
 
