@@ -4,13 +4,16 @@ import 'package:numberpicker/numberpicker.dart';
 class AddProductSizes extends StatefulWidget {
   final Function(int) addSize;
   final Function(int) removeSize;
-  AddProductSizes({required this.addSize, required this.removeSize});
+
+  const AddProductSizes(
+      {Key? key, required this.addSize, required this.removeSize})
+      : super(key: key);
   @override
   _AddProductSizesState createState() => _AddProductSizesState();
 }
 
 class _AddProductSizesState extends State<AddProductSizes> {
-  List _productSizes = [];
+  List productSizes = [];
   int? _pickedNumber = 3;
   Future<int?> showMyNumberPicker() async {
     return showDialog<int>(
@@ -19,7 +22,7 @@ class _AddProductSizesState extends State<AddProductSizes> {
       builder: (context) {
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            title: Text("Choose a size"),
+            title: const Text("Choose a size"),
             content: NumberPicker(
               minValue: 2,
               maxValue: 37,
@@ -33,9 +36,8 @@ class _AddProductSizesState extends State<AddProductSizes> {
             actions: <Widget>[
               InkWell(
                 onTap: () => Navigator.of(context).pop(),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 13, vertical: 8),
                   child: Text("Cancel"),
                 ),
               ),
@@ -43,9 +45,8 @@ class _AddProductSizesState extends State<AddProductSizes> {
                 onTap: () {
                   Navigator.of(context).pop(_pickedNumber);
                 },
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 13, vertical: 8),
                   child: Text("Ok"),
                 ),
               ),
@@ -60,15 +61,15 @@ class _AddProductSizesState extends State<AddProductSizes> {
   Widget build(BuildContext context) {
     return ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: _productSizes.length + 1,
+        itemCount: productSizes.length + 1,
         itemBuilder: (context, index) {
-          _productSizes.sort();
-          if (index < _productSizes.length) {
+          productSizes.sort();
+          if (index < productSizes.length) {
             return Stack(
               children: [
                 Container(
-                  padding: EdgeInsets.all(8),
-                  margin: EdgeInsets.only(right: 5),
+                  padding: const EdgeInsets.all(8),
+                  margin: const EdgeInsets.only(right: 5),
                   height: 100,
                   width: 80,
                   decoration: BoxDecoration(
@@ -76,8 +77,8 @@ class _AddProductSizesState extends State<AddProductSizes> {
                       color: Colors.white),
                   child: Center(
                     child: Text(
-                      "US ${_productSizes[index]}",
-                      style: TextStyle(
+                      "US ${productSizes[index]}",
+                      style: const TextStyle(
                           fontWeight: FontWeight.w600,
                           color: Color(0xFF1A191C)),
                     ),
@@ -90,10 +91,10 @@ class _AddProductSizesState extends State<AddProductSizes> {
                       onPressed: () {
                         widget.removeSize(index);
                         setState(() {
-                          _productSizes.removeAt(index);
+                          productSizes.removeAt(index);
                         });
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.cancel,
                         size: 16,
                       ),
@@ -105,14 +106,14 @@ class _AddProductSizesState extends State<AddProductSizes> {
               onPressed: () async {
                 _pickedNumber = (await showMyNumberPicker());
                 if (_pickedNumber != null &&
-                    _productSizes.contains(_pickedNumber) == false) {
+                    productSizes.contains(_pickedNumber) == false) {
                   widget.addSize(_pickedNumber!);
                   setState(() {
-                    _productSizes.add(_pickedNumber);
+                    productSizes.add(_pickedNumber);
                   });
                 }
               },
-              icon: Icon(Icons.add));
+              icon: const Icon(Icons.add));
         });
   }
 }

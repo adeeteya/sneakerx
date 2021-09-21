@@ -5,25 +5,28 @@ import 'package:image_picker/image_picker.dart';
 class AddProductImages extends StatefulWidget {
   final Function(File) addImage;
   final Function(int) removeImage;
-  AddProductImages({required this.addImage, required this.removeImage});
+
+  const AddProductImages(
+      {Key? key, required this.addImage, required this.removeImage})
+      : super(key: key);
   @override
   _AddProductImagesState createState() => _AddProductImagesState();
 }
 
 class _AddProductImagesState extends State<AddProductImages> {
   final ImagePicker _picker = ImagePicker();
-  List<File> _imagesList = [];
+  List<File> imagesList = [];
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: _imagesList.length + 1,
+        itemCount: imagesList.length + 1,
         itemBuilder: (context, index) {
-          if (index < _imagesList.length) {
+          if (index < imagesList.length) {
             return Stack(
               children: [
                 ClipRRect(
-                  child: Image.file(_imagesList[index]),
+                  child: Image.file(imagesList[index]),
                 ),
                 Positioned(
                   top: 0,
@@ -32,17 +35,17 @@ class _AddProductImagesState extends State<AddProductImages> {
                       onPressed: () {
                         widget.removeImage(index);
                         setState(() {
-                          _imagesList.removeAt(index);
+                          imagesList.removeAt(index);
                         });
                       },
-                      icon: Icon(Icons.cancel_outlined)),
+                      icon: const Icon(Icons.cancel_outlined)),
                 )
               ],
             );
           }
           return Container(
             width: 150,
-            margin: EdgeInsets.only(left: 5),
+            margin: const EdgeInsets.only(left: 5),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12), color: Colors.black12),
             child: IconButton(
@@ -53,11 +56,11 @@ class _AddProductImagesState extends State<AddProductImages> {
                     final imageTemporary = File(image.path);
                     widget.addImage(imageTemporary);
                     setState(() {
-                      _imagesList.add(imageTemporary);
+                      imagesList.add(imageTemporary);
                     });
                   }
                 },
-                icon: Icon(Icons.add_a_photo)),
+                icon: const Icon(Icons.add_a_photo)),
           );
         });
   }

@@ -2,14 +2,16 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:sneakerx/models/ProductModel.dart';
-import 'package:sneakerx/services/FirestoreService.dart';
-import 'package:sneakerx/widgets/AddProductColors.dart';
-import 'package:sneakerx/widgets/AddProductImages.dart';
-import 'package:sneakerx/widgets/AddProductSizes.dart';
-import '../constants.dart';
+import 'package:sneakerx/constants.dart';
+import 'package:sneakerx/models/product_model.dart';
+import 'package:sneakerx/services/firestore_service.dart';
+import 'package:sneakerx/widgets/add_product_colors.dart';
+import 'package:sneakerx/widgets/add_product_images.dart';
+import 'package:sneakerx/widgets/add_product_sizes.dart';
 
 class AddItemPage extends StatefulWidget {
+  const AddItemPage({Key? key}) : super(key: key);
+
   @override
   _AddItemPageState createState() => _AddItemPageState();
 }
@@ -18,22 +20,22 @@ class _AddItemPageState extends State<AddItemPage> {
   final _firestoreInstance = FirestoreService();
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
-  List<File> _imagesList = [];
-  Product _product = Product(colors: [], sizes: [], images: []);
+  List<File> imagesList = [];
+  Product product = Product(colors: [], sizes: [], images: []);
   void _errorDialog(String? message) {
     showDialog(
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Registration Failed"),
+            title: const Text("Registration Failed"),
             content: Text(message ?? ""),
             actions: [
               TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text(
+                  child: const Text(
                     "Ok",
                     style: TextStyle(
                         color: Color(0xFFAAA6D6), fontWeight: FontWeight.bold),
@@ -47,27 +49,27 @@ class _AddItemPageState extends State<AddItemPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: AppBar(title: Text("Add Item"), centerTitle: true),
+        appBar: AppBar(title: const Text("Add Item"), centerTitle: true),
         body: Padding(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
+              const Text(
                 "Product Pictures",
                 style: TextStyle(fontSize: 16),
               ),
               Expanded(
                 flex: 2,
                 child: AddProductImages(addImage: (image) {
-                  _imagesList.add(image);
+                  imagesList.add(image);
                 }, removeImage: (index) {
-                  _imagesList.removeAt(index);
+                  imagesList.removeAt(index);
                 }),
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 "Product Details",
                 style: TextStyle(fontSize: 16),
               ),
@@ -80,18 +82,18 @@ class _AddItemPageState extends State<AddItemPage> {
                       TextFormField(
                         textInputAction: TextInputAction.next,
                         onChanged: (val) {
-                          _product.brand = val;
+                          product.brand = val;
                         },
                         validator: (val) =>
                             val!.isEmpty ? "Please Enter a brand name" : null,
                         decoration:
                             textInputDecoration.copyWith(hintText: "Brand"),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       TextFormField(
                         textInputAction: TextInputAction.next,
                         onChanged: (val) {
-                          _product.name = val;
+                          product.name = val;
                         },
                         validator: (val) => val!.isEmpty
                             ? "Please Enter the product name"
@@ -99,16 +101,16 @@ class _AddItemPageState extends State<AddItemPage> {
                         decoration:
                             textInputDecoration.copyWith(hintText: "Name"),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       TextFormField(
                         keyboardType: TextInputType.number,
                         onChanged: (val) {
-                          _product.price = int.parse(val);
+                          product.price = int.parse(val);
                         },
                         validator: (val) =>
                             val!.isEmpty ? "Please Enter the price" : null,
                         decoration: textInputDecoration.copyWith(
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.attach_money,
                             ),
                             hintText: "Price"),
@@ -117,64 +119,69 @@ class _AddItemPageState extends State<AddItemPage> {
                   ),
                 ),
               ),
-              Text(
+              const Text(
                 "Product Sizes",
                 style: TextStyle(fontSize: 16),
               ),
               Expanded(
                 flex: 1,
                 child: AddProductSizes(addSize: (size) {
-                  _product.sizes!.add(size);
+                  product.sizes!.add(size);
                 }, removeSize: (index) {
-                  _product.sizes!.removeAt(index);
+                  product.sizes!.removeAt(index);
                 }),
               ),
-              SizedBox(height: 5),
-              Text(
+              const SizedBox(height: 5),
+              const Text(
                 "Product Colors",
                 style: TextStyle(fontSize: 16),
               ),
               Expanded(
                 flex: 1,
                 child: AddProductColors(
-                  addColor: (colorString) => _product.colors!.add(colorString),
-                  removeColor: (index) => _product.colors!.removeAt(index),
+                  addColor: (colorString) => product.colors!.add(colorString),
+                  removeColor: (index) => product.colors!.removeAt(index),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Expanded(
                 flex: 1,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Container(
                     width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 20),
                     height: 50,
                     child: ElevatedButton(
-                      style:
-                          ElevatedButton.styleFrom(primary: Color(0xFFF68A0A)),
+                      style: ElevatedButton.styleFrom(
+                          primary: const Color(0xFFF68A0A)),
                       onPressed: () async {
-                        if (_imagesList.isEmpty) {
+                        if (imagesList.isEmpty) {
                           _errorDialog("Please Insert Product Images");
-                        } else if (_product.sizes!.isEmpty) {
+                        } else if (product.sizes!.isEmpty) {
                           _errorDialog("Please Add Shoe Sizes");
-                        } else if (_product.colors!.isEmpty) {
+                        } else if (product.colors!.isEmpty) {
                           _errorDialog("Please Add Product Colors");
                         } else if (_formKey.currentState!.validate()) {
                           setState(() {
                             _isLoading = true;
                           });
+                          product.sizes?.sort();
                           await _firestoreInstance.addProduct(
-                              _product, _imagesList);
+                              product, imagesList);
                           _isLoading = false;
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text('Product Added to the Catalog')));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content:
+                                      Text('Product Added to the Catalog')));
                           Navigator.pop(context);
                         }
                       },
                       child: (_isLoading)
-                          ? CircularProgressIndicator(color: Color(0xFFF4F5FC))
-                          : Text(
+                          ? const CircularProgressIndicator(
+                              color: Color(0xFFF4F5FC))
+                          : const Text(
                               "Add Item",
                               style: TextStyle(fontSize: 18),
                             ),

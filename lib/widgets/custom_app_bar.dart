@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:sneakerx/services/FirestoreService.dart';
+import 'package:sneakerx/services/firestore_service.dart';
 
 class CustomAppBar extends StatefulWidget {
   final String productId;
-  CustomAppBar({this.productId = "YmD4B30TpqxwmYUO5VZG"});
+
+  const CustomAppBar({Key? key, required this.productId}) : super(key: key);
   @override
   _CustomAppBarState createState() => _CustomAppBarState();
 }
@@ -22,7 +23,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
         stream: _firebaseInstance.userData,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
           Map<String, dynamic> userFavoritesData =
               snapshot.data!.data() as Map<String, dynamic>;
@@ -37,16 +38,16 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon:
-                      Icon(Icons.arrow_back_rounded, color: Color(0xFFF4F5FC)),
+                  icon: const Icon(Icons.arrow_back_rounded,
+                      color: Color(0xFFF4F5FC)),
                 ),
                 IconButton(
                   onPressed: () {
                     toggleFavorite();
                   },
                   icon: (_isFavorite)
-                      ? Icon(Icons.favorite, color: Colors.red)
-                      : Icon(
+                      ? const Icon(Icons.favorite, color: Colors.red)
+                      : const Icon(
                           Icons.favorite_outline,
                           color: Color(0xFFF4F5FC),
                         ),

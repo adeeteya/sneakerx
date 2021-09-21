@@ -3,14 +3,18 @@ import 'package:flutter/material.dart';
 class AddProductColors extends StatefulWidget {
   final Function(String) addColor;
   final Function(int) removeColor;
-  AddProductColors({required this.addColor, required this.removeColor});
+
+  const AddProductColors(
+      {Key? key, required this.addColor, required this.removeColor})
+      : super(key: key);
+
   @override
   _AddProductColorsState createState() => _AddProductColorsState();
 }
 
 class _AddProductColorsState extends State<AddProductColors> {
-  List<String> _productColors = [];
-  List<String> _availableColors = [
+  List<String> productColors = [];
+  List<String> availableColors = [
     'red',
     'black',
     'teal',
@@ -50,16 +54,16 @@ class _AddProductColorsState extends State<AddProductColors> {
         context: context,
         builder: (BuildContext context) {
           return SimpleDialog(
-            backgroundColor: Color(0xFFF4F5FC),
-            title: Text("Choose a Color"),
-            children: _availableColors.map((availableColor) {
+            backgroundColor: const Color(0xFFF4F5FC),
+            title: const Text("Choose a Color"),
+            children: availableColors.map((availableColor) {
               return SimpleDialogOption(
                 onPressed: () {
-                  _productColors.add(availableColor);
+                  productColors.add(availableColor);
                   Navigator.pop(context);
                   setState(() {
                     widget.addColor(availableColor);
-                    _availableColors.remove(availableColor);
+                    availableColors.remove(availableColor);
                   });
                 },
                 child: Stack(
@@ -74,7 +78,7 @@ class _AddProductColorsState extends State<AddProductColors> {
                     ),
                     Text(
                       availableColor,
-                      style: TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18),
                     )
                   ],
                 ),
@@ -88,18 +92,18 @@ class _AddProductColorsState extends State<AddProductColors> {
   Widget build(BuildContext context) {
     return ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: _productColors.length + 1,
+        itemCount: productColors.length + 1,
         itemBuilder: (context, index) {
-          if (index < _productColors.length) {
+          if (index < productColors.length) {
             return Stack(
               children: [
                 Container(
                   height: 100,
                   width: 80,
-                  margin: EdgeInsets.only(right: 5),
+                  margin: const EdgeInsets.only(right: 5),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      color: getColorFromString(_productColors[index])),
+                      color: getColorFromString(productColors[index])),
                 ),
                 Positioned(
                     right: -8,
@@ -108,10 +112,10 @@ class _AddProductColorsState extends State<AddProductColors> {
                       onPressed: () {
                         widget.removeColor(index);
                         setState(() {
-                          _availableColors.add(_productColors.removeAt(index));
+                          availableColors.add(productColors.removeAt(index));
                         });
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.cancel,
                         size: 16,
                       ),
@@ -123,7 +127,7 @@ class _AddProductColorsState extends State<AddProductColors> {
               onPressed: () {
                 _chooseColorDialog();
               },
-              icon: Icon(Icons.add));
+              icon: const Icon(Icons.add));
         });
   }
 }

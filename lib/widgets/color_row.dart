@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class ColorRow extends StatefulWidget {
   final List? colors;
   final Function(int)? onSelected;
-  ColorRow({this.colors, this.onSelected});
+
+  const ColorRow({Key? key, this.colors, this.onSelected}) : super(key: key);
   @override
   _ColorRowState createState() => _ColorRowState();
 }
@@ -42,7 +43,7 @@ class _ColorRowState extends State<ColorRow> {
           "Color",
           style: TextStyle(color: ThemeData.light().hintColor, fontSize: 16),
         ),
-        SizedBox(height: 5),
+        const SizedBox(height: 5),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           clipBehavior: Clip.none,
@@ -58,7 +59,8 @@ class _ColorRowState extends State<ColorRow> {
                         _selectedColorPos = i;
                       });
                     },
-                    child: Container(
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
                       width: 50,
                       height: 50,
                       decoration: BoxDecoration(
@@ -67,8 +69,8 @@ class _ColorRowState extends State<ColorRow> {
                         border: Border.all(
                           width: 4,
                           color: (i == _selectedColorPos)
-                              ? Color(0xFFF68A0A)
-                              : Color(0xFFF4F5FC),
+                              ? const Color(0xFFF68A0A)
+                              : const Color(0xFFF4F5FC),
                         ),
                       ),
                     ),

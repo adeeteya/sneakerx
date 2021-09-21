@@ -1,4 +1,4 @@
-package com.aditya.sneakerx.sneakerx
+package com.aditya.sneakerx
 
 import io.flutter.embedding.android.FlutterActivity
 

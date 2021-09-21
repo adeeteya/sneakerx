@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sneakerx/services/FirestoreService.dart';
-import 'package:sneakerx/widgets/ColorRow.dart';
-import 'package:sneakerx/widgets/CustomAppBar.dart';
-import 'package:sneakerx/widgets/ImageSwipeView.dart';
-import 'package:sneakerx/widgets/SizeRow.dart';
+import 'package:sneakerx/services/firestore_service.dart';
+import 'package:sneakerx/widgets/color_row.dart';
+import 'package:sneakerx/widgets/custom_app_bar.dart';
+import 'package:sneakerx/widgets/image_swipe_view.dart';
+import 'package:sneakerx/widgets/size_row.dart';
 
 class ProductPage extends StatefulWidget {
   final String productId;
-  ProductPage({required this.productId});
+
+  const ProductPage({Key? key, required this.productId}) : super(key: key);
   @override
   _ProductPageState createState() => _ProductPageState();
 }
@@ -21,7 +22,7 @@ class _ProductPageState extends State<ProductPage> {
     await _instance.addToCart(widget.productId,
         size: _selectedSize, color: _selectedColor);
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text("Product Added To Cart")));
+        .showSnackBar(const SnackBar(content: Text("Product Added To Cart")));
   }
 
   Future toggleFavorite() async {
@@ -31,7 +32,7 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFAAA6D6),
+      backgroundColor: const Color(0xFFAAA6D6),
       body: FutureBuilder<Map<String, dynamic>>(
         future: _instance.getProductDetails(widget.productId),
         builder: (context, snapshot) {
@@ -61,8 +62,8 @@ class _ProductPageState extends State<ProductPage> {
                     flex: 3,
                     child: Container(
                       width: double.infinity,
-                      padding: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
+                      padding: const EdgeInsets.all(20),
+                      decoration: const BoxDecoration(
                         color: Color(0xFFF4F5FC),
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(50),
@@ -77,7 +78,7 @@ class _ProductPageState extends State<ProductPage> {
                             children: [
                               Text(
                                 documentData['brand'],
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 24, fontWeight: FontWeight.w600),
                               ),
                               Text(
@@ -102,32 +103,32 @@ class _ProductPageState extends State<ProductPage> {
                           Container(
                             height: 70,
                             width: double.infinity,
-                            padding: EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                                color: Color(0xFFF68A0A),
+                                color: const Color(0xFFF68A0A),
                                 borderRadius: BorderRadius.circular(35)),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   "\$${documentData['price']}",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 18,
                                       color: Color(0xFFF4F5FC),
                                       fontWeight: FontWeight.w600),
                                 ),
                                 ElevatedButton.icon(
-                                  icon: Icon(Icons.shopping_cart_outlined,
+                                  icon: const Icon(Icons.shopping_cart_outlined,
                                       color: Color(0xFF1A191C)),
                                   onPressed: addToCart,
-                                  label: Text("Add to Cart",
+                                  label: const Text("Add to Cart",
                                       style: TextStyle(
                                         fontSize: 16,
                                         color: Color(0xFF1A191C),
                                         fontWeight: FontWeight.bold,
                                       )),
                                   style: ElevatedButton.styleFrom(
-                                      primary: Color(0xFFF4F5FC),
+                                      primary: const Color(0xFFF4F5FC),
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(20))),
@@ -143,7 +144,7 @@ class _ProductPageState extends State<ProductPage> {
               );
             }
           }
-          return Center(
+          return const Center(
               child: CircularProgressIndicator(color: Color(0xFFF4F5FC)));
         },
       ),

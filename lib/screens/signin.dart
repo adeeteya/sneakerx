@@ -1,13 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:sneakerx/constants.dart';
 import 'package:sneakerx/loading.dart';
-import 'package:sneakerx/services/AuthenticationService.dart';
-
-import '../constants.dart';
+import 'package:sneakerx/services/authentication_service.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
-  SignIn({required this.toggleView});
+
+  const SignIn({Key? key, required this.toggleView}) : super(key: key);
+
   @override
   _SignInState createState() => _SignInState();
 }
@@ -31,14 +32,14 @@ class _SignInState extends State<SignIn> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Registration Failed"),
+            title: const Text("Registration Failed"),
             content: Text(message ?? ""),
             actions: [
               TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text(
+                  child: const Text(
                     "Ok",
                     style: TextStyle(
                         color: Color(0xFFAAA6D6), fontWeight: FontWeight.bold),
@@ -56,21 +57,21 @@ class _SignInState extends State<SignIn> {
       return Scaffold(
         body: SafeArea(
             child: Padding(
-          padding: EdgeInsets.only(top: 50, left: 20, right: 20),
+          padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
           child: Form(
             key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Welcome Back 👋",
                   style: TextStyle(
                       fontSize: 24,
                       color: Color(0xFFF68A0A),
                       fontWeight: FontWeight.w700),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Text(
                   "We are happy to see you back,Please sign in to continue",
                   style: TextStyle(
@@ -78,7 +79,7 @@ class _SignInState extends State<SignIn> {
                       color: Theme.of(context).hintColor,
                       fontWeight: FontWeight.w100),
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 TextFormField(
                   textInputAction: TextInputAction.next,
                   onChanged: (val) {
@@ -89,7 +90,7 @@ class _SignInState extends State<SignIn> {
                   autofocus: true,
                   decoration: textInputDecoration.copyWith(hintText: "Email"),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 TextFormField(
                   obscureText: _hiddenPassword,
                   onChanged: (val) {
@@ -114,15 +115,15 @@ class _SignInState extends State<SignIn> {
                         ),
                       )),
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: Container(
+                  child: SizedBox(
                     width: double.infinity,
                     height: 50,
                     child: ElevatedButton(
-                      style:
-                          ElevatedButton.styleFrom(primary: Color(0xFFF68A0A)),
+                      style: ElevatedButton.styleFrom(
+                          primary: const Color(0xFFF68A0A)),
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           setState(() {
@@ -141,7 +142,7 @@ class _SignInState extends State<SignIn> {
                           }
                         }
                       },
-                      child: Text(
+                      child: const Text(
                         "Sign In",
                         style: TextStyle(fontSize: 18),
                       ),
@@ -155,7 +156,7 @@ class _SignInState extends State<SignIn> {
                         onPressed: () {
                           widget.toggleView();
                         },
-                        child: Text("New User?")),
+                        child: const Text("New User?")),
                     TextButton(
                         onPressed: () async {
                           if (_email.isEmpty) {
@@ -173,7 +174,7 @@ class _SignInState extends State<SignIn> {
                                 "Password Reset Request Sent Successfully");
                           }
                         },
-                        child: Text("Forgot Password?")),
+                        child: const Text("Forgot Password?")),
                   ],
                 )
               ],

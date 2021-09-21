@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sneakerx/services/FirestoreService.dart';
+import 'package:sneakerx/services/firestore_service.dart';
 
 class CartListTile extends StatefulWidget {
   final String productId;
@@ -11,7 +11,9 @@ class CartListTile extends StatefulWidget {
   final String brand;
   final String name;
   final int price;
-  CartListTile({
+
+  const CartListTile({
+    Key? key,
     required this.productId,
     required this.chosenSize,
     required this.chosenColor,
@@ -20,7 +22,8 @@ class CartListTile extends StatefulWidget {
     required this.brand,
     required this.name,
     required this.price,
-  });
+  }) : super(key: key);
+
   @override
   _CartListTileState createState() => _CartListTileState();
 }
@@ -34,11 +37,11 @@ class _CartListTileState extends State<CartListTile> {
         Expanded(
           flex: 1,
           child: Card(
-            color: Color(0xFFF4F5FC),
+            color: const Color(0xFFF4F5FC),
             elevation: 4,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            child: Container(
+            child: SizedBox(
               width: 40,
               height: 120,
               child: FadeInImage.assetNetwork(
@@ -48,24 +51,25 @@ class _CartListTileState extends State<CartListTile> {
             ),
           ),
         ),
-        SizedBox(width: 4),
+        const SizedBox(width: 4),
         Expanded(
           flex: 2,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(widget.brand + " " + widget.name,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-              SizedBox(height: 2),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 20)),
+              const SizedBox(height: 2),
               Text("Size:${widget.chosenSize} Color:${widget.chosenColor}",
                   style: TextStyle(
                       fontSize: 16, color: ThemeData.light().hintColor)),
-              SizedBox(height: 2),
+              const SizedBox(height: 2),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("\$${widget.price}",
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                           fontSize: 18)),
@@ -78,10 +82,11 @@ class _CartListTileState extends State<CartListTile> {
                                 color: widget.chosenColor,
                                 size: widget.chosenSize);
                           },
-                          icon: Icon(Icons.remove_circle_outline_outlined)),
+                          icon:
+                              const Icon(Icons.remove_circle_outline_outlined)),
                       Text(
                         "${widget.quantity}",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       IconButton(
                         onPressed: () async {
@@ -89,7 +94,7 @@ class _CartListTileState extends State<CartListTile> {
                               color: widget.chosenColor,
                               size: widget.chosenSize);
                         },
-                        icon: Icon(Icons.add_circle),
+                        icon: const Icon(Icons.add_circle),
                       ),
                     ],
                   )

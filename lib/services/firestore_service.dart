@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:sneakerx/models/ProductModel.dart';
-import 'package:sneakerx/services/AuthenticationService.dart';
+import 'package:sneakerx/models/product_model.dart';
+import 'package:sneakerx/services/authentication_service.dart';
 
 class FirestoreService {
   final FirebaseFirestore _instance = FirebaseFirestore.instance;
@@ -61,10 +61,11 @@ class FirestoreService {
         Map<String, dynamic> data =
             documentSnapshot.data() as Map<String, dynamic>;
         int quantity = data['quantity'] - 1;
-        if (quantity == 0)
+        if (quantity == 0) {
           await _cartReference.doc(newProductId).delete();
-        else
+        } else {
           await _cartReference.doc(newProductId).update({'quantity': quantity});
+        }
       }
     });
   }
@@ -139,7 +140,6 @@ class FirestoreService {
     final _firebaseStorage = FirebaseStorage.instance;
     Map<String, dynamic> productData = await getProductDetails(productId);
     List imagesUrl = productData['images'];
-    print(imagesUrl);
     for (int i = 0; i < imagesUrl.length; i++) {
       await _firebaseStorage.refFromURL(imagesUrl[i]).delete();
     }

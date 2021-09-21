@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sneakerx/services/FirestoreService.dart';
+import 'package:sneakerx/services/firestore_service.dart';
 
 class ProductCard extends StatefulWidget {
   final String productId;
@@ -12,8 +12,10 @@ class ProductCard extends StatefulWidget {
   final String defaultColor;
   final bool isFavorite;
   final Function showCartItems;
-  ProductCard(
-      {required this.productId,
+
+  const ProductCard(
+      {Key? key,
+      required this.productId,
       required this.brand,
       required this.name,
       required this.imageUrl,
@@ -21,7 +23,8 @@ class ProductCard extends StatefulWidget {
       required this.defaultSize,
       required this.defaultColor,
       required this.isFavorite,
-      required this.showCartItems});
+      required this.showCartItems})
+      : super(key: key);
 
   @override
   _ProductCardState createState() => _ProductCardState();
@@ -41,10 +44,10 @@ class _ProductCardState extends State<ProductCard> {
   Widget build(BuildContext context) {
     return Card(
         elevation: 4,
-        color: Color(0xFFF4F5FC),
+        color: const Color(0xFFF4F5FC),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: Padding(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: Column(
             children: [
               Expanded(
@@ -57,22 +60,23 @@ class _ProductCardState extends State<ProductCard> {
                           await toggleFavorite();
                         },
                         icon: (widget.isFavorite)
-                            ? Icon(Icons.favorite, color: Colors.red)
-                            : Icon(Icons.favorite_outline)),
+                            ? const Icon(Icons.favorite, color: Colors.red)
+                            : const Icon(Icons.favorite_outline)),
                     IconButton(
                         onPressed: () async {
                           await addToCart();
-                          await Future.delayed(Duration(milliseconds: 100));
+                          await Future.delayed(
+                              const Duration(milliseconds: 100));
                           await widget.showCartItems();
                         },
-                        icon: Icon(Icons.add, color: Color(0xFFF68A0A)))
+                        icon: const Icon(Icons.add, color: Color(0xFFF68A0A)))
                   ],
                 ),
               ),
               Expanded(
                   flex: 3,
                   child: Container(
-                    padding: EdgeInsets.only(left: 8, right: 8),
+                    padding: const EdgeInsets.only(left: 8, right: 8),
                     child: Hero(
                       tag: widget.productId,
                       child: FadeInImage.assetNetwork(
@@ -92,7 +96,7 @@ class _ProductCardState extends State<ProductCard> {
               Expanded(
                   flex: 1,
                   child: Text("\$${widget.price}",
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 16,
                           color: Color(0xFFF68A0A),
                           fontWeight: FontWeight.bold)))

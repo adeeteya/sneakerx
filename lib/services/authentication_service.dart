@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:sneakerx/services/FirestoreService.dart';
+import 'package:sneakerx/services/firestore_service.dart';
 
 class AuthenticationService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -16,7 +16,6 @@ class AuthenticationService {
       User? user = userCredential.user;
       return user;
     } catch (e) {
-      print(e);
       return e;
     }
   }
@@ -30,7 +29,6 @@ class AuthenticationService {
       FirestoreService().createUserDetails();
       return user;
     } catch (e) {
-      print(e);
       return e;
     }
   }
@@ -39,7 +37,6 @@ class AuthenticationService {
     try {
       return await _auth.sendPasswordResetEmail(email: email ?? "");
     } catch (e) {
-      print(e);
       return e;
     }
   }

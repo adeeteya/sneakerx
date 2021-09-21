@@ -1,12 +1,13 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sneakerx/services/FirestoreService.dart';
-import 'package:sneakerx/widgets/CartListTile.dart';
+import 'package:sneakerx/services/firestore_service.dart';
+import 'package:sneakerx/widgets/cart_list_tile.dart';
 
 class CartPage extends StatefulWidget {
+  const CartPage({Key? key}) : super(key: key);
+
   @override
   _CartPageState createState() => _CartPageState();
 }
@@ -18,7 +19,7 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Cart")),
+      appBar: AppBar(title: const Text("Cart")),
       body: StreamBuilder<QuerySnapshot>(
         stream: _firebaseInstance.cartStream,
         builder: (context, snapshot) {
@@ -26,7 +27,7 @@ class _CartPageState extends State<CartPage> {
             return Center(child: Text("${snapshot.error}"));
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
                 child: CircularProgressIndicator(color: Color(0xFF1A191C)));
           }
           List<DocumentSnapshot> cartItemsSnapshot = snapshot.data!.docs;
@@ -65,7 +66,7 @@ class _CartPageState extends State<CartPage> {
               Expanded(
                 flex: 2,
                 child: ListView(
-                  padding: EdgeInsets.fromLTRB(8, 10, 8, 20),
+                  padding: const EdgeInsets.fromLTRB(8, 10, 8, 20),
                   children: cartItems.map((cartItem) {
                     return FutureBuilder<Map<String, dynamic>>(
                         future: _firebaseInstance
@@ -73,7 +74,7 @@ class _CartPageState extends State<CartPage> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return Center(
+                            return const Center(
                                 child: CircularProgressIndicator(
                               color: Colors.black,
                             ));
@@ -99,10 +100,10 @@ class _CartPageState extends State<CartPage> {
                   }).toList(), //sizedBox(h-20)
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Container(
                 color: Colors.transparent,
-                padding: EdgeInsets.fromLTRB(16, 10, 16, 30),
+                padding: const EdgeInsets.fromLTRB(16, 10, 16, 30),
                 child: Column(
                   children: [
                     StreamBuilder<int>(
@@ -110,7 +111,7 @@ class _CartPageState extends State<CartPage> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return Center(
+                            return const Center(
                                 child: CircularProgressIndicator(
                                     color: Colors.black));
                           }
@@ -119,49 +120,49 @@ class _CartPageState extends State<CartPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("Total",
+                                const Text("Total",
                                     style: TextStyle(
                                         fontSize: 22,
                                         fontWeight: FontWeight.bold)),
                                 (_noOfItems == 0)
-                                    ? Text("\$0",
+                                    ? const Text("\$0",
                                         style: TextStyle(
                                             fontSize: 22,
                                             fontWeight: FontWeight.bold))
                                     : (_noOfItems == 1)
                                         ? Text(
                                             "(${_noOfItems}item) \$${snapshot.data}",
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 22,
                                                 fontWeight: FontWeight.bold))
                                         : Text(
                                             "(${_noOfItems}items) \$${snapshot.data}",
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 22,
                                                 fontWeight: FontWeight.bold))
                               ],
                             ),
                           );
                         }),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Container(
                       width: double.infinity,
-                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               primary: Colors.black,
-                              padding: EdgeInsets.symmetric(vertical: 20),
+                              padding: const EdgeInsets.symmetric(vertical: 20),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(40))),
                           onPressed: (_noOfItems == 0)
                               ? null
                               : () {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
+                                      const SnackBar(
                                           content: Text(
                                               "Payment feature currently not available")));
                                 },
-                          child: Text("Proceed To Checkout",
+                          child: const Text("Proceed To Checkout",
                               style: TextStyle(
                                   fontSize: 22, fontWeight: FontWeight.bold))),
                     )

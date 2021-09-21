@@ -1,15 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sneakerx/screens/add_item_page.dart';
+import 'package:sneakerx/screens/cart_page.dart';
 import 'package:sneakerx/screens/product_page.dart';
 import 'package:sneakerx/screens/profile_page.dart';
-import 'package:sneakerx/services/AuthenticationService.dart';
-import 'package:sneakerx/services/FirestoreService.dart';
-import 'package:sneakerx/widgets/ProductCard.dart';
-import 'add_item_page.dart';
-import 'cart_page.dart';
+import 'package:sneakerx/services/authentication_service.dart';
+import 'package:sneakerx/services/firestore_service.dart';
+import 'package:sneakerx/widgets/product_card.dart';
 
 class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -24,28 +26,28 @@ class _HomeState extends State<Home> {
       content: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Cart', style: TextStyle(fontSize: 18)),
+          const Text('Cart', style: TextStyle(fontSize: 18)),
           Row(
             children: [
-              (imageUrls.isNotEmpty)
-                  ? CircleAvatar(backgroundImage: NetworkImage(imageUrls[0]))
-                  : SizedBox(),
-              SizedBox(width: 8),
-              (imageUrls.length == 2)
-                  ? CircleAvatar(backgroundImage: NetworkImage(imageUrls[1]))
-                  : SizedBox(),
-              SizedBox(width: 8),
+              if (imageUrls.isNotEmpty)
+                CircleAvatar(backgroundImage: NetworkImage(imageUrls[0])),
+              const SizedBox(width: 8),
+              if (imageUrls.length == 2)
+                CircleAvatar(backgroundImage: NetworkImage(imageUrls[1])),
+              const SizedBox(width: 8),
               Container(
                 decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xFFF68A0A)),
+                    border: Border.all(color: const Color(0xFFF68A0A)),
                     shape: BoxShape.circle),
                 child: IconButton(
                   onPressed: () {
                     ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => CartPage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CartPage()));
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.arrow_forward_rounded,
                     color: Color(0xFFFAF5FC),
                   ),
@@ -55,9 +57,9 @@ class _HomeState extends State<Home> {
           )
         ],
       ),
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      duration: Duration(seconds: 3),
-      backgroundColor: Color(0xFF1A191C),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      duration: const Duration(seconds: 3),
+      backgroundColor: const Color(0xFF1A191C),
     ));
   }
 
@@ -73,7 +75,7 @@ class _HomeState extends State<Home> {
             );
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
                 child: CircularProgressIndicator(
               color: Colors.black,
             ));
@@ -83,7 +85,7 @@ class _HomeState extends State<Home> {
               stream: _firestoreInstance.userData,
               builder: (context, snapshot2) {
                 if (snapshot2.connectionState == ConnectionState.waiting) {
-                  return Center(
+                  return const Center(
                       child: CircularProgressIndicator(color: Colors.black));
                 }
                 Map<String, dynamic> userData =
@@ -95,14 +97,15 @@ class _HomeState extends State<Home> {
                     child: CustomScrollView(
                       slivers: [
                         SliverAppBar(
-                          backgroundColor: Color(0xFFF4F5FC),
+                          backgroundColor: const Color(0xFFF4F5FC),
                           elevation: 0,
                           leading: GestureDetector(
                             onTap: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ProfilePage()));
+                                      builder: (context) =>
+                                          const ProfilePage()));
                             },
                             child: (_user?.photoURL != null)
                                 ? Hero(
@@ -112,7 +115,7 @@ class _HomeState extends State<Home> {
                                         backgroundImage: NetworkImage(
                                             _user?.photoURL ?? "")),
                                   )
-                                : Hero(
+                                : const Hero(
                                     tag: 'User Profile Image',
                                     child: CircleAvatar(
                                         radius: 64,
@@ -124,14 +127,14 @@ class _HomeState extends State<Home> {
                           pinned: true,
                           flexibleSpace: FlexibleSpaceBar(
                             title: (_showFavorites)
-                                ? Text("Favorites")
-                                : Text("Catalog"),
+                                ? const Text("Favorites")
+                                : const Text("Catalog"),
                             centerTitle: true,
                           ),
                           actions: [
                             IconButton(
                                 onPressed: () {},
-                                icon: Icon(Icons.search_rounded))
+                                icon: const Icon(Icons.search_rounded))
                           ],
                         ),
                         SliverToBoxAdapter(
@@ -143,16 +146,16 @@ class _HomeState extends State<Home> {
                                   flex: 2,
                                   child: ElevatedButton.icon(
                                       style: ElevatedButton.styleFrom(
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               vertical: 20),
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(20))),
-                                      icon: Icon(
+                                      icon: const Icon(
                                         Icons.add_rounded,
                                         color: Colors.black,
                                       ),
-                                      label: Text(
+                                      label: const Text(
                                         "Add Item",
                                         style: TextStyle(
                                             color: Colors.black,
@@ -163,10 +166,10 @@ class _HomeState extends State<Home> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    AddItemPage()));
+                                                    const AddItemPage()));
                                       }),
                                 ),
-                                SizedBox(width: 8),
+                                const SizedBox(width: 8),
                                 Expanded(
                                   flex: 1,
                                   child: ElevatedButton(
@@ -176,26 +179,26 @@ class _HomeState extends State<Home> {
                                       });
                                     },
                                     child: (_showFavorites)
-                                        ? Icon(
+                                        ? const Icon(
                                             Icons.favorite_rounded,
                                             color: Colors.white,
                                           )
-                                        : Icon(
+                                        : const Icon(
                                             Icons.favorite_rounded,
                                             color: Colors.black,
                                           ),
                                     style: ElevatedButton.styleFrom(
                                         primary: (_showFavorites)
-                                            ? Color(0xFFF68A0A)
-                                            : Color(0xFFF4F5FC),
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 20),
+                                            ? const Color(0xFFF68A0A)
+                                            : const Color(0xFFF4F5FC),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 20),
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(20))),
                                   ),
                                 ),
-                                SizedBox(width: 8),
+                                const SizedBox(width: 8),
                                 Expanded(
                                   flex: 1,
                                   child: ElevatedButton(
@@ -204,15 +207,15 @@ class _HomeState extends State<Home> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  CartPage()));
+                                                  const CartPage()));
                                     },
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.shopping_cart_rounded,
                                       color: Colors.black,
                                     ),
                                     style: ElevatedButton.styleFrom(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 20),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 20),
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(20))),
@@ -224,7 +227,7 @@ class _HomeState extends State<Home> {
                         ),
                         (_showFavorites)
                             ? (favoritesList.isEmpty)
-                                ? SliverFillRemaining(
+                                ? const SliverFillRemaining(
                                     child: Center(child: Text("No Favorites")))
                                 : SliverGrid(
                                     delegate: SliverChildBuilderDelegate(
@@ -258,7 +261,7 @@ class _HomeState extends State<Home> {
                                       );
                                     }, childCount: favoritesList.length),
                                     gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
                                             crossAxisCount: 2,
                                             childAspectRatio: 0.6,
                                             mainAxisSpacing: 10),
@@ -294,7 +297,7 @@ class _HomeState extends State<Home> {
                                   );
                                 }, childCount: productsSnapshot.length),
                                 gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
                                   childAspectRatio: 0.6,
                                   mainAxisSpacing: 10,

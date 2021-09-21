@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -7,7 +6,8 @@ import 'package:provider/provider.dart';
 
 class Verification extends StatefulWidget {
   final Function toggleView;
-  Verification({required this.toggleView});
+
+  const Verification({Key? key, required this.toggleView}) : super(key: key);
 
   @override
   _VerificationState createState() => _VerificationState();
@@ -28,7 +28,7 @@ class _VerificationState extends State<Verification> {
   void initState() {
     user = Provider.of<User?>(context, listen: false);
     user!.sendEmailVerification();
-    timer = Timer.periodic(Duration(seconds: 4), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 4), (timer) {
       checkEmailVerified();
     });
     super.initState();
@@ -46,12 +46,12 @@ class _VerificationState extends State<Verification> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
+          const Text(
             "Confirm your Email Address",
             style: TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
           ),
           Center(child: Lottie.asset("assets/lottie/email_verification.json")),
-          Text(
+          const Text(
             "Check your inbox and your spam folder",
             style: TextStyle(fontSize: 16),
           )

@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class SizeRow extends StatefulWidget {
   final List? sizes;
   final Function(int)? onSelected;
-  SizeRow({this.sizes, this.onSelected});
+
+  const SizeRow({Key? key, this.sizes, this.onSelected}) : super(key: key);
   @override
   _SizeRowState createState() => _SizeRowState();
 }
@@ -20,7 +21,7 @@ class _SizeRowState extends State<SizeRow> {
           "Size",
           style: TextStyle(color: ThemeData.light().hintColor, fontSize: 16),
         ),
-        SizedBox(height: 5),
+        const SizedBox(height: 5),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           clipBehavior: Clip.none,
@@ -41,15 +42,15 @@ class _SizeRowState extends State<SizeRow> {
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: (i == _selectedSizePos)
-                              ? Color(0xFFF4F5FC)
-                              : Color(0xFF1A191C)),
+                              ? const Color(0xFFF4F5FC)
+                              : const Color(0xFF1A191C)),
                     ),
                     style: ElevatedButton.styleFrom(
                         primary: (i == _selectedSizePos)
-                            ? Color(0xFFF68A0A)
-                            : Color(0xFFF4F5FC),
-                        padding:
-                            EdgeInsets.symmetric(vertical: 20, horizontal: 6),
+                            ? const Color(0xFFF68A0A)
+                            : const Color(0xFFF4F5FC),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 20, horizontal: 6),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20))),
                   ),

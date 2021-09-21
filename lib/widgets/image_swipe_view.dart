@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 class ImageSwipeView extends StatefulWidget {
   final List imagesList;
   final String productId;
-  ImageSwipeView({required this.imagesList, required this.productId});
+
+  const ImageSwipeView(
+      {Key? key, required this.imagesList, required this.productId})
+      : super(key: key);
   @override
   _ImageSwipeViewState createState() => _ImageSwipeViewState();
 }
@@ -13,7 +16,7 @@ class _ImageSwipeViewState extends State<ImageSwipeView> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
       child: Stack(
         children: [
           PageView(
@@ -43,12 +46,12 @@ class _ImageSwipeViewState extends State<ImageSwipeView> {
                   curve: Curves.easeOutCubic,
                   width: (i == _selectedPage) ? 30 : 10,
                   height: 10,
-                  margin: EdgeInsets.symmetric(horizontal: 5),
+                  margin: const EdgeInsets.symmetric(horizontal: 5),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: Colors.white.withOpacity(0.5),
                   ),
-                  duration: Duration(milliseconds: 300),
+                  duration: const Duration(milliseconds: 300),
                 ),
             ]),
           ),
