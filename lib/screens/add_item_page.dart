@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -29,7 +28,7 @@ class _AddItemPageState extends State<AddItemPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text("Registration Failed"),
+            title: const Text("Product Upload Failed"),
             content: Text(message ?? ""),
             actions: [
               TextButton(

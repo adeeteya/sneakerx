@@ -12,4 +12,24 @@ class Product {
       this.colors,
       this.sizes,
       this.images});
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+      brand: json['brand'] as String,
+      name: json['name'] as String,
+      price: json['price'] as int,
+      colors: json['colors'].cast<String>(),
+      sizes: json['sizes'].cast<int>(),
+      images: json['images'].cast<String>(),
+    );
+  }
+  Map<String, Object?> toJson() {
+    return {
+      'brand': brand,
+      'name': name,
+      'price': price,
+      'colors': colors,
+      'sizes': sizes,
+      'images': images
+    };
+  }
 }

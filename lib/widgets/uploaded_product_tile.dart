@@ -19,7 +19,9 @@ class _UploadedProductTileState extends State<UploadedProductTile> {
         future: _firestoreInstance.getProductDetails(widget.productId),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return const Center(child: Text("Product may have been removed"));
+            return Center(
+                child: Text(
+                    "Product may have been removed ${snapshot.error.toString()}"));
           }
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic>? data = snapshot.data;

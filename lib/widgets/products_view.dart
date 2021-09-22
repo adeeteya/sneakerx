@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:sneakerx/models/product_model.dart';
 import 'package:sneakerx/screens/cart_page.dart';
 import 'package:sneakerx/screens/product_page.dart';
 import 'package:sneakerx/services/firestore_service.dart';
@@ -93,17 +94,14 @@ class _ProductsViewState extends State<ProductsView> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  ProductPage(productId: docId)));
+                              builder: (context) => ProductPage(
+                                    productId: docId,
+                                    product: Product.fromJson(data),
+                                  )));
                     },
                     child: ProductCard(
                       productId: docId,
-                      brand: data['brand'],
-                      name: data['name'],
-                      price: data['price'],
-                      imageUrl: data['images'][0],
-                      defaultSize: data['sizes'][0],
-                      defaultColor: data['colors'][0],
+                      product: Product.fromJson(data),
                       showCartItems: showCartItems,
                       isFavorite: true,
                     ),
@@ -120,24 +118,22 @@ class _ProductsViewState extends State<ProductsView> {
               delegate: SliverChildBuilderDelegate((context, index) {
                 DocumentSnapshot productSnapshot =
                     widget.productsSnapshot.elementAt(index);
-                Map<String, dynamic> data =
-                    productSnapshot.data()! as Map<String, dynamic>;
+                Product product = Product.fromJson(
+                    productSnapshot.data()! as Map<String, dynamic>);
+                //Map<String, dynamic> data = productSnapshot.data()! as Map<String, dynamic>;
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ProductPage(productId: productSnapshot.id)));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductPage(
+                            productId: productSnapshot.id, product: product),
+                      ),
+                    );
                   },
                   child: ProductCard(
                     productId: productSnapshot.id,
-                    brand: data['brand'],
-                    name: data['name'],
-                    price: data['price'],
-                    imageUrl: data['images'][0],
-                    defaultSize: data['sizes'][0],
-                    defaultColor: data['colors'][0],
+                    product: product,
                     showCartItems: showCartItems,
                     isFavorite: favoritesList.contains(productSnapshot.id),
                   ),

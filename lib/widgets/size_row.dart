@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SizeRow extends StatefulWidget {
-  final List? sizes;
+  final List<int>? sizes;
   final Function(int)? onSelected;
 
-  const SizeRow({Key? key, this.sizes, this.onSelected}) : super(key: key);
+  const SizeRow({Key? key, required this.sizes, required this.onSelected})
+      : super(key: key);
   @override
   _SizeRowState createState() => _SizeRowState();
 }

@@ -1,27 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sneakerx/models/product_model.dart';
 import 'package:sneakerx/services/firestore_service.dart';
 
 class ProductCard extends StatefulWidget {
   final String productId;
-  final String brand;
-  final String name;
-  final String imageUrl;
-  final int price;
-  final int defaultSize;
-  final String defaultColor;
+  final Product product;
   final bool isFavorite;
   final Function showCartItems;
 
   const ProductCard(
       {Key? key,
       required this.productId,
-      required this.brand,
-      required this.name,
-      required this.imageUrl,
-      required this.price,
-      required this.defaultSize,
-      required this.defaultColor,
+      required this.product,
       required this.isFavorite,
       required this.showCartItems})
       : super(key: key);
@@ -33,7 +24,7 @@ class ProductCard extends StatefulWidget {
 class _ProductCardState extends State<ProductCard> {
   Future addToCart() async {
     await FirestoreService().addToCart(widget.productId,
-        color: widget.defaultColor, size: widget.defaultSize);
+        color: widget.product.colors![0], size: widget.product.sizes![0]);
   }
 
   Future toggleFavorite() async {
@@ -82,20 +73,20 @@ class _ProductCardState extends State<ProductCard> {
                       child: FadeInImage.assetNetwork(
                           fit: BoxFit.contain,
                           placeholder: "assets/loading.gif",
-                          image: widget.imageUrl),
+                          image: widget.product.images![0]),
                     ),
                   )),
               Expanded(
                   flex: 1,
                   child: Column(
                     children: [
-                      Text(widget.brand),
-                      Text(widget.name),
+                      Text(widget.product.brand),
+                      Text(widget.product.name),
                     ],
                   )),
               Expanded(
                   flex: 1,
-                  child: Text("\$${widget.price}",
+                  child: Text("\$${widget.product.price}",
                       style: const TextStyle(
                           fontSize: 16,
                           color: Color(0xFFF68A0A),

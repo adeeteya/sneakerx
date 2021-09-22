@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:sneakerx/models/product_model.dart';
@@ -7,6 +6,11 @@ import 'package:sneakerx/services/authentication_service.dart';
 
 class FirestoreService {
   final FirebaseFirestore _instance = FirebaseFirestore.instance;
+  final CollectionReference<Product> _productsRef =
+      FirebaseFirestore.instance.collection('products').withConverter<Product>(
+            fromFirestore: (snapshot, _) => Product.fromJson(snapshot.data()!),
+            toFirestore: (product, _) => product.toJson(),
+          );
   final String userId = AuthenticationService().getUser()!.uid;
 
   Future createUserDetails() async {
@@ -20,6 +24,12 @@ class FirestoreService {
     DocumentSnapshot documentSnapshot =
         await _instance.collection("products").doc(productId).get();
     Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
+    /*
+    DocumentSnapshot documentSnapshot2 =
+        await _productsRef.doc(productId).get();
+    Product p = documentSnapshot2.data() as Product;
+
+     */
     return data;
   }
 
@@ -108,17 +118,10 @@ class FirestoreService {
   }
 
   Future addProduct(Product data, List<File> images) async {
-    DocumentReference _productsReference =
-        await _instance.collection('products').add({
-      'brand': data.brand,
-      'name': data.name,
-      'price': data.price,
-      'sizes': data.sizes,
-      'colors': data.colors
-    });
+    DocumentReference _productReference = await _productsRef.add(data);
     for (int i = 0; i < images.length; i++) {
       Reference ref =
-          FirebaseStorage.instance.ref('products/${_productsReference.id}/$i');
+          FirebaseStorage.instance.ref('products/${_productReference.id}/$i');
       await ref.putFile(images[i]);
       String url = await ref.getDownloadURL();
       data.images!.add(url);
@@ -128,12 +131,12 @@ class FirestoreService {
     Map<String, dynamic> userCreatedData =
         _documentSnapshot.data() as Map<String, dynamic>;
     List productsList = userCreatedData['products'] ?? [];
-    productsList.add(_productsReference.id);
+    productsList.add(_productReference.id);
     await _instance
         .collection('users')
         .doc(userId)
         .update({'products': productsList});
-    await _productsReference.update({'images': data.images});
+    await _productReference.update({'images': data.images});
   }
 
   Future deleteProduct(String productId) async {
