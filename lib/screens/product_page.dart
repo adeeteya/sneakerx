@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sneakerx/screens/cart_page.dart';
 import 'package:sneakerx/services/firestore_service.dart';
 import 'package:sneakerx/widgets/color_row.dart';
 import 'package:sneakerx/widgets/custom_app_bar.dart';
@@ -15,14 +16,58 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  final _instance = FirestoreService();
+  final _firestoreInstance = FirestoreService();
   int _selectedSize = 0;
   String _selectedColor = "";
+  Future showCartItems() async {
+    List<String> imageUrls = await _firestoreInstance.getLastTwoCartImages();
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text('Cart', style: TextStyle(fontSize: 18)),
+          Row(
+            children: [
+              if (imageUrls.isNotEmpty)
+                CircleAvatar(backgroundImage: NetworkImage(imageUrls[0])),
+              const SizedBox(width: 8),
+              if (imageUrls.length == 2)
+                CircleAvatar(backgroundImage: NetworkImage(imageUrls[1])),
+              const SizedBox(width: 8),
+              Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: const Color(0xFFF68A0A)),
+                    shape: BoxShape.circle),
+                child: IconButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CartPage()));
+                  },
+                  icon: const Icon(
+                    Icons.arrow_forward_rounded,
+                    color: Color(0xFFFAF5FC),
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      duration: const Duration(seconds: 3),
+      backgroundColor: const Color(0xFF1A191C),
+    ));
+  }
+
   void addToCart() async {
-    await _instance.addToCart(widget.productId,
+    await _firestoreInstance.addToCart(widget.productId,
         size: _selectedSize, color: _selectedColor);
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text("Product Added To Cart")));
+    await Future.delayed(const Duration(milliseconds: 200));
+    showCartItems();
   }
 
   Future toggleFavorite() async {
@@ -34,7 +79,7 @@ class _ProductPageState extends State<ProductPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFAAA6D6),
       body: FutureBuilder<Map<String, dynamic>>(
-        future: _instance.getProductDetails(widget.productId),
+        future: _firestoreInstance.getProductDetails(widget.productId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {

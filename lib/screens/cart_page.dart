@@ -19,7 +19,10 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Cart")),
+      appBar: AppBar(
+          title: const Text(
+        "Cart",
+      )),
       body: StreamBuilder<QuerySnapshot>(
         stream: _firebaseInstance.cartStream,
         builder: (context, snapshot) {

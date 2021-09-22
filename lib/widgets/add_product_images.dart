@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -45,7 +46,9 @@ class _AddProductImagesState extends State<AddProductImages> {
           }
           return Container(
             width: 150,
-            margin: const EdgeInsets.only(left: 5),
+            margin: EdgeInsets.only(
+              left: (imagesList.isEmpty) ? 0 : 5,
+            ),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12), color: Colors.black12),
             child: IconButton(

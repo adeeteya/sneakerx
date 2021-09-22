@@ -41,7 +41,11 @@ class _AppState extends State<App> {
             color: Color(0xFFF4F5FC),
             centerTitle: true,
             iconTheme: IconThemeData(color: Colors.black),
-            titleTextStyle: TextStyle(color: Color(0xFF1A191C)),
+            titleTextStyle: TextStyle(
+                color: Color(0xFF1A191C),
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+                fontFamily: "Futura"),
           ),
           scaffoldBackgroundColor: const Color(0xFFF4F5FC),
           elevatedButtonTheme: ElevatedButtonThemeData(
