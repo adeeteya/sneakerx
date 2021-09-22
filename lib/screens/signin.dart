@@ -21,9 +21,9 @@ class _SignInState extends State<SignIn> {
   bool _hiddenPassword = true;
   bool isLoading = false;
 
-  void showSnackBar(String? message) {
+  void showSnackBar(String message) {
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message ?? "")));
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   void _errorDialog(String? message) {
@@ -52,12 +52,11 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return Loading();
+      return const Loading();
     } else {
       return Scaffold(
         body: SafeArea(
-            child: Padding(
-          padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
+          minimum: const EdgeInsets.only(top: 50, left: 20, right: 20),
           child: Form(
             key: _formKey,
             child: Column(
@@ -168,7 +167,7 @@ class _SignInState extends State<SignIn> {
                           if (result.runtimeType == FirebaseAuthException) {
                             FirebaseAuthException e =
                                 result as FirebaseAuthException;
-                            showSnackBar(e.message);
+                            showSnackBar(e.message ?? 'Unknown Error Occurred');
                           } else {
                             showSnackBar(
                                 "Password Reset Request Sent Successfully");
@@ -180,7 +179,7 @@ class _SignInState extends State<SignIn> {
               ],
             ),
           ),
-        )),
+        ),
       );
     }
   }

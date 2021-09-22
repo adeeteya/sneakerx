@@ -92,12 +92,21 @@ class _ProductsViewState extends State<ProductsView> {
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProductPage(
-                                    productId: docId,
-                                    product: Product.fromJson(data),
-                                  )));
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: const Duration(milliseconds: 600),
+                          reverseTransitionDuration:
+                              const Duration(milliseconds: 400),
+                          pageBuilder: (context, animation, _) =>
+                              FadeTransition(
+                            opacity: animation,
+                            child: ProductPage(
+                              productId: docId,
+                              product: Product.fromJson(data),
+                            ),
+                          ),
+                        ),
+                      );
                     },
                     child: ProductCard(
                       productId: docId,
@@ -120,14 +129,21 @@ class _ProductsViewState extends State<ProductsView> {
                     widget.productsSnapshot.elementAt(index);
                 Product product = Product.fromJson(
                     productSnapshot.data()! as Map<String, dynamic>);
-                //Map<String, dynamic> data = productSnapshot.data()! as Map<String, dynamic>;
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => ProductPage(
-                            productId: productSnapshot.id, product: product),
+                      PageRouteBuilder(
+                        transitionDuration: const Duration(milliseconds: 600),
+                        reverseTransitionDuration:
+                            const Duration(milliseconds: 400),
+                        pageBuilder: (context, animation, _) => FadeTransition(
+                          opacity: animation,
+                          child: ProductPage(
+                            productId: productSnapshot.id,
+                            product: product,
+                          ),
+                        ),
                       ),
                     );
                   },
