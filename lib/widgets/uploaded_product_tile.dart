@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sneakerx/models/product_model.dart';
 import 'package:sneakerx/services/firestore_service.dart';
 
 class UploadedProductTile extends StatefulWidget {
@@ -15,17 +16,15 @@ class _UploadedProductTileState extends State<UploadedProductTile> {
   final _firestoreInstance = FirestoreService();
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, dynamic>>(
+    return FutureBuilder<Product>(
         future: _firestoreInstance.getProductDetails(widget.productId),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Center(
-                child: Text(
-                    "Product may have been removed ${snapshot.error.toString()}"));
+            return const Center(child: Text("Product may have been removed"));
           }
           if (snapshot.connectionState == ConnectionState.done) {
-            Map<String, dynamic>? data = snapshot.data;
-            if (data == null) {
+            Product? product = snapshot.data;
+            if (product == null) {
               return const Center(child: Text("Product may have been removed"));
             }
             return Card(
@@ -37,12 +36,12 @@ class _UploadedProductTileState extends State<UploadedProductTile> {
                   child: FadeInImage.assetNetwork(
                       fit: BoxFit.fitWidth,
                       placeholder: 'assets/loading.gif',
-                      image: data['images'][0]),
+                      image: product.images![0]),
                 ),
                 title:
-                    Text(data['brand'], style: const TextStyle(fontSize: 18)),
+                    Text(product.brand, style: const TextStyle(fontSize: 18)),
                 subtitle: Text(
-                  data['name'],
+                  product.name,
                   style: const TextStyle(fontSize: 16),
                 ),
                 trailing: IconButton(

@@ -1,8 +1,8 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sneakerx/models/product_model.dart';
 import 'package:sneakerx/services/firestore_service.dart';
 import 'package:sneakerx/widgets/cart_list_tile.dart';
 
@@ -72,7 +72,7 @@ class _CartPageState extends State<CartPage> {
                 child: ListView(
                   padding: const EdgeInsets.fromLTRB(8, 10, 8, 20),
                   children: cartItems.map((cartItem) {
-                    return FutureBuilder<Map<String, dynamic>>(
+                    return FutureBuilder<Product>(
                         future: _firebaseInstance
                             .getProductDetails(cartItem['productId']),
                         builder: (context, snapshot) {
@@ -86,19 +86,19 @@ class _CartPageState extends State<CartPage> {
                           if (snapshot.hasError) {
                             return Center(child: Text("${snapshot.error}"));
                           }
-                          Map<String, dynamic>? data = snapshot.data;
+                          Product? product = snapshot.data;
                           _total +=
-                              (data!['price'] * cartItem['quantity']) as int;
+                              (product!.price * cartItem['quantity']) as int;
                           _controller.sink.add(_total);
                           return CartListTile(
                             productId: cartItem['productId'],
                             chosenSize: cartItem['chosenSize'],
                             chosenColor: cartItem['chosenColor'],
                             quantity: cartItem['quantity'],
-                            imageUrl: data['images'][0],
-                            brand: data['brand'],
-                            name: data['name'],
-                            price: data['price'],
+                            imageUrl: product.images![0],
+                            brand: product.brand,
+                            name: product.name,
+                            price: product.price,
                           );
                         });
                   }).toList(), //sizedBox(h-20)

@@ -20,17 +20,9 @@ class FirestoreService {
         .set({'favorites': [], 'products': []});
   }
 
-  Future<Map<String, dynamic>> getProductDetails(String productId) async {
-    DocumentSnapshot documentSnapshot =
-        await _instance.collection("products").doc(productId).get();
-    Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
-    /*
-    DocumentSnapshot documentSnapshot2 =
-        await _productsRef.doc(productId).get();
-    Product p = documentSnapshot2.data() as Product;
-
-     */
-    return data;
+  Future<Product> getProductDetails(String productId) async {
+    DocumentSnapshot documentSnapshot = await _productsRef.doc(productId).get();
+    return documentSnapshot.data() as Product;
   }
 
   Future addToCart(String productId, {String color = '', int size = 0}) async {
@@ -111,8 +103,8 @@ class FirestoreService {
       if (double.tryParse(productId[0]) != null) {
         productId = productId.substring(1);
       }
-      Map<String, dynamic> productData = await getProductDetails(productId);
-      imageUrls.add(productData['images'][0]);
+      Product productData = await getProductDetails(productId);
+      imageUrls.add(productData.images![0]);
     }
     return imageUrls;
   }
@@ -142,8 +134,8 @@ class FirestoreService {
   Future deleteProduct(String productId) async {
     //delete images from storage
     final _firebaseStorage = FirebaseStorage.instance;
-    Map<String, dynamic> productData = await getProductDetails(productId);
-    List imagesUrl = productData['images'];
+    Product productData = await getProductDetails(productId);
+    List imagesUrl = productData.images!;
     for (int i = 0; i < imagesUrl.length; i++) {
       await _firebaseStorage.refFromURL(imagesUrl[i]).delete();
     }
