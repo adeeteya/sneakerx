@@ -19,26 +19,24 @@ class _ProfilePageState extends State<ProfilePage> {
   void _signOutDialog() {
     showDialog(
         context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Sign Out'),
-            content: const Text("Do you really want to sign out?"),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Cancel")),
-              TextButton(
-                  onPressed: () async {
-                    Navigator.pop(context);
-                    await AuthenticationService().signOut();
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text("Yes"))
-            ],
-          );
-        });
+        builder: (context) => AlertDialog(
+              title: const Text('Sign Out'),
+              content: const Text("Do you really want to sign out?"),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Cancel")),
+                TextButton(
+                    onPressed: () async {
+                      Navigator.pop(context);
+                      await AuthenticationService().signOut();
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("Yes"))
+              ],
+            ));
   }
 
   @override
@@ -122,10 +120,15 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   PopupMenuItem<MenuItem> buildItem(MenuItem item) => PopupMenuItem<MenuItem>(
-      value: item,
-      child: Row(
-        children: [Icon(item.icon), const SizedBox(width: 12), Text(item.text)],
-      ));
+        value: item,
+        child: Row(
+          children: [
+            Icon(item.icon),
+            const SizedBox(width: 12),
+            Text(item.text)
+          ],
+        ),
+      );
   void onMenuItemSelected(BuildContext context, MenuItem item) {
     switch (item) {
       case MenuItems.itemChangePfp:

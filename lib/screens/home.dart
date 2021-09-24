@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 4),
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
@@ -53,7 +53,7 @@ class _HomeState extends State<Home> {
                       ),
               ),
               expandedHeight: 120,
-              pinned: true,
+              floating: true,
               flexibleSpace: FlexibleSpaceBar(
                 title: (showFavorites)
                     ? const Text("Favorites")

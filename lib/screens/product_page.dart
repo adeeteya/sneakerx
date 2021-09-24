@@ -21,10 +21,35 @@ class ProductPage extends StatefulWidget {
 class _ProductPageState extends State<ProductPage>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
-  late Animation<Offset> _animation;
+  late Animation<Offset> _slideUpAnimation;
+  late Animation<double> _fadeAnimation;
   final _firestoreInstance = FirestoreService();
   int selectedSize = 0;
   String selectedColor = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1200),
+      vsync: this,
+    )..forward();
+    _slideUpAnimation = Tween<Offset>(
+      begin: const Offset(0, 1),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.4, 0.8, curve: Curves.easeOutSine)));
+    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.8, 1, curve: Curves.easeIn)));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   Future showCartItems() async {
     List<String> imageUrls = await _firestoreInstance.getLastTwoCartImages();
@@ -70,28 +95,6 @@ class _ProductPageState extends State<ProductPage>
     ));
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 700),
-      vsync: this,
-    )..forward();
-    _animation = Tween<Offset>(
-      begin: const Offset(0, 1),
-      end: const Offset(0, 0),
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInCubic,
-    ));
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
   void addToCart() async {
     await _firestoreInstance.addToCart(widget.productId,
         size: selectedSize, color: selectedColor);
@@ -119,8 +122,7 @@ class _ProductPageState extends State<ProductPage>
           Expanded(
             flex: 3,
             child: SlideTransition(
-              position: _animation,
-              transformHitTests: true,
+              position: _slideUpAnimation,
               child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
@@ -130,71 +132,75 @@ class _ProductPageState extends State<ProductPage>
                       topLeft: Radius.circular(50),
                       topRight: Radius.circular(50)),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.product.brand,
-                          style: const TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.w600),
-                        ),
-                        Text(
-                          widget.product.name,
-                          style: TextStyle(
-                              color: ThemeData.light().hintColor, fontSize: 16),
-                        ),
-                      ],
-                    ),
-                    SizeRow(
-                        sizes: widget.product.sizes,
-                        onSelected: (selected) {
-                          selectedSize = widget.product.sizes![selected];
-                        }),
-                    ColorRow(
-                        colors: widget.product.colors,
-                        onSelected: (selected) {
-                          selectedColor = widget.product.colors![selected];
-                        }),
-                    Container(
-                      height: 70,
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                          color: const Color(0xFFF68A0A),
-                          borderRadius: BorderRadius.circular(35)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "\$${widget.product.price}",
+                            widget.product.brand,
                             style: const TextStyle(
-                                fontSize: 18,
-                                color: Color(0xFFF4F5FC),
-                                fontWeight: FontWeight.w600),
+                                fontSize: 24, fontWeight: FontWeight.w600),
                           ),
-                          ElevatedButton.icon(
-                            icon: const Icon(Icons.shopping_cart_outlined,
-                                color: Color(0xFF1A191C)),
-                            onPressed: addToCart,
-                            label: const Text("Add to Cart",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Color(0xFF1A191C),
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            style: ElevatedButton.styleFrom(
-                                primary: const Color(0xFFF4F5FC),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20))),
-                          )
+                          Text(
+                            widget.product.name,
+                            style: TextStyle(
+                                color: ThemeData.light().hintColor,
+                                fontSize: 16),
+                          ),
                         ],
                       ),
-                    ),
-                  ],
+                      SizeRow(
+                          sizes: widget.product.sizes,
+                          onSelected: (selected) {
+                            selectedSize = widget.product.sizes![selected];
+                          }),
+                      ColorRow(
+                          colors: widget.product.colors,
+                          onSelected: (selected) {
+                            selectedColor = widget.product.colors![selected];
+                          }),
+                      Container(
+                        height: 70,
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                            color: const Color(0xFFF68A0A),
+                            borderRadius: BorderRadius.circular(35)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "\$${widget.product.price}",
+                              style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Color(0xFFF4F5FC),
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            ElevatedButton.icon(
+                              icon: const Icon(Icons.shopping_cart_outlined,
+                                  color: Color(0xFF1A191C)),
+                              onPressed: addToCart,
+                              label: const Text("Add to Cart",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Color(0xFF1A191C),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              style: ElevatedButton.styleFrom(
+                                  primary: const Color(0xFFF4F5FC),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20))),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

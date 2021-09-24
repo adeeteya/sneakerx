@@ -44,39 +44,43 @@ class _ColorRowState extends State<ColorRow> {
           style: TextStyle(color: ThemeData.light().hintColor, fontSize: 16),
         ),
         const SizedBox(height: 5),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          clipBehavior: Clip.none,
-          child: Row(
-            children: [
-              for (int i = 0; i < widget.colors!.length; i++)
-                Padding(
-                  padding: const EdgeInsets.only(right: 5),
-                  child: GestureDetector(
-                    onTap: () {
-                      widget.onSelected!(i);
-                      setState(() {
-                        _selectedColorPos = i;
-                      });
-                    },
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: getColorFromString(widget.colors![i]),
-                        border: Border.all(
-                          width: 4,
-                          color: (i == _selectedColorPos)
-                              ? const Color(0xFFF68A0A)
-                              : const Color(0xFFF4F5FC),
+        SizedBox(
+          height: 58,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            clipBehavior: Clip.none,
+            child: Row(
+              children: [
+                for (int i = 0; i < widget.colors!.length; i++)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5),
+                    child: GestureDetector(
+                      onTap: () {
+                        widget.onSelected!(i);
+                        setState(() {
+                          _selectedColorPos = i;
+                        });
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.elasticOut,
+                        width: (i == _selectedColorPos) ? 58 : 50,
+                        height: (i == _selectedColorPos) ? 58 : 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: getColorFromString(widget.colors![i]),
+                          border: Border.all(
+                            width: 4,
+                            color: (i == _selectedColorPos)
+                                ? const Color(0xFFF68A0A)
+                                : const Color(0xFFF4F5FC),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                )
-            ],
+              ],
+            ),
           ),
         ),
       ],

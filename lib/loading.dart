@@ -6,9 +6,19 @@ class Loading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: const Color(0xFF1a191c),
-      child: Center(child: Lottie.asset("assets/lottie/loading.json")),
+    return Scaffold(
+      backgroundColor: const Color(0xFF1a191c),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Lottie.asset("assets/lottie/loading.json"),
+          const Text(
+            'Loading',
+            style: TextStyle(
+                color: Color(0xFFF4F5FC), letterSpacing: 2, fontSize: 32),
+          ),
+        ],
+      ),
     );
   }
 }

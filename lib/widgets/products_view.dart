@@ -94,12 +94,14 @@ class _ProductsViewState extends State<ProductsView> {
                       Navigator.push(
                         context,
                         PageRouteBuilder(
-                          transitionDuration: const Duration(milliseconds: 600),
+                          transitionDuration: const Duration(milliseconds: 500),
                           reverseTransitionDuration:
                               const Duration(milliseconds: 400),
                           pageBuilder: (context, animation, _) =>
-                              FadeTransition(
-                            opacity: animation,
+                              SlideTransition(
+                            position: Tween<Offset>(
+                                    begin: const Offset(1, 0), end: Offset.zero)
+                                .animate(animation),
                             child: ProductPage(
                               productId: docId,
                               product: Product.fromJson(data),
@@ -134,11 +136,13 @@ class _ProductsViewState extends State<ProductsView> {
                     Navigator.push(
                       context,
                       PageRouteBuilder(
-                        transitionDuration: const Duration(milliseconds: 600),
+                        transitionDuration: const Duration(milliseconds: 500),
                         reverseTransitionDuration:
                             const Duration(milliseconds: 400),
-                        pageBuilder: (context, animation, _) => FadeTransition(
-                          opacity: animation,
+                        pageBuilder: (context, animation, _) => SlideTransition(
+                          position: Tween<Offset>(
+                                  begin: const Offset(1, 0), end: Offset.zero)
+                              .animate(animation),
                           child: ProductPage(
                             productId: productSnapshot.id,
                             product: product,

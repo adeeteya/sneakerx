@@ -78,10 +78,13 @@ class _CartPageState extends State<CartPage> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return const Center(
-                                child: CircularProgressIndicator(
-                              color: Colors.black,
-                            ));
+                            return const Padding(
+                              padding: EdgeInsets.all(32),
+                              child: Center(
+                                  child: CircularProgressIndicator(
+                                color: Colors.black,
+                              )),
+                            );
                           }
                           if (snapshot.hasError) {
                             return Center(child: Text("${snapshot.error}"));

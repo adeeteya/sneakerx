@@ -34,7 +34,7 @@ class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-        elevation: 4,
+        elevation: 6,
         color: const Color(0xFFF4F5FC),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: Padding(
