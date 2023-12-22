@@ -8,10 +8,10 @@ import 'package:sneakerx/screens/verification.dart';
 import 'screens/home.dart';
 
 class Wrapper extends StatefulWidget {
-  const Wrapper({Key? key}) : super(key: key);
+  const Wrapper({super.key});
 
   @override
-  _WrapperState createState() => _WrapperState();
+  State<Wrapper> createState() => _WrapperState();
 }
 
 class _WrapperState extends State<Wrapper> {

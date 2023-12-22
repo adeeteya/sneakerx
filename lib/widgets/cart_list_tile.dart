@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sneakerx/services/firestore_service.dart';
 
@@ -13,7 +12,7 @@ class CartListTile extends StatefulWidget {
   final int price;
 
   const CartListTile({
-    Key? key,
+    super.key,
     required this.productId,
     required this.chosenSize,
     required this.chosenColor,
@@ -22,10 +21,10 @@ class CartListTile extends StatefulWidget {
     required this.brand,
     required this.name,
     required this.price,
-  }) : super(key: key);
+  });
 
   @override
-  _CartListTileState createState() => _CartListTileState();
+  State<CartListTile> createState() => _CartListTileState();
 }
 
 class _CartListTileState extends State<CartListTile> {
@@ -57,7 +56,7 @@ class _CartListTileState extends State<CartListTile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.brand + " " + widget.name,
+              Text("${widget.brand} ${widget.name}",
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 20)),
               const SizedBox(height: 2),

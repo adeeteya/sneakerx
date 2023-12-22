@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sneakerx/screens/add_item_page.dart';
 import 'package:sneakerx/screens/cart_page.dart';
@@ -9,10 +8,10 @@ import 'package:sneakerx/services/firestore_service.dart';
 import 'package:sneakerx/widgets/products_view.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
-  _HomeState createState() => _HomeState();
+  State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
@@ -103,6 +102,13 @@ class _HomeState extends State<Home> {
                             showFavorites = !showFavorites;
                           });
                         },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: (showFavorites)
+                                ? const Color(0xFFF68A0A)
+                                : const Color(0xFFF4F5FC),
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20))),
                         child: (showFavorites)
                             ? const Icon(
                                 Icons.favorite_rounded,
@@ -112,13 +118,6 @@ class _HomeState extends State<Home> {
                                 Icons.favorite_rounded,
                                 color: Colors.black,
                               ),
-                        style: ElevatedButton.styleFrom(
-                            primary: (showFavorites)
-                                ? const Color(0xFFF68A0A)
-                                : const Color(0xFFF4F5FC),
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20))),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -131,14 +130,14 @@ class _HomeState extends State<Home> {
                               MaterialPageRoute(
                                   builder: (context) => const CartPage()));
                         },
-                        child: const Icon(
-                          Icons.shopping_cart_rounded,
-                          color: Colors.black,
-                        ),
                         style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 20),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20))),
+                        child: const Icon(
+                          Icons.shopping_cart_rounded,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ],

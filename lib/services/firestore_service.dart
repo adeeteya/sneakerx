@@ -26,23 +26,23 @@ class FirestoreService {
   }
 
   Future addToCart(String productId, {String color = '', int size = 0}) async {
-    CollectionReference _cartReference =
+    CollectionReference cartReference =
         _instance.collection("users").doc(userId).collection("cart");
-    String newProductId = color + "0$size" + productId;
-    DocumentReference _documentReference = _instance
+    String newProductId = "${color}0$size$productId";
+    DocumentReference documentReference = _instance
         .collection("users")
         .doc(userId)
         .collection("cart")
         .doc(newProductId);
-    _documentReference.get().then((documentSnapshot) async {
+    documentReference.get().then((documentSnapshot) async {
       if (documentSnapshot.exists) {
         Map<String, dynamic> data =
             documentSnapshot.data() as Map<String, dynamic>;
         int quantity = data['quantity'] + 1;
-        await _cartReference.doc(newProductId).update(
+        await cartReference.doc(newProductId).update(
             {'quantity': quantity, 'timeStamp': FieldValue.serverTimestamp()});
       } else {
-        await _cartReference
+        await cartReference
             .doc(newProductId)
             .set({'quantity': 1, 'timeStamp': FieldValue.serverTimestamp()});
       }
@@ -51,33 +51,33 @@ class FirestoreService {
 
   Future decrementQuantity(String productId,
       {String color = '', int size = 0}) async {
-    CollectionReference _cartReference =
+    CollectionReference cartReference =
         _instance.collection("users").doc(userId).collection("cart");
-    String newProductId = color + "0$size" + productId;
-    DocumentReference _documentReference = _instance
+    String newProductId = "${color}0$size$productId";
+    DocumentReference documentReference = _instance
         .collection("users")
         .doc(userId)
         .collection("cart")
         .doc(newProductId);
-    _documentReference.get().then((documentSnapshot) async {
+    documentReference.get().then((documentSnapshot) async {
       if (documentSnapshot.exists) {
         Map<String, dynamic> data =
             documentSnapshot.data() as Map<String, dynamic>;
         int quantity = data['quantity'] - 1;
         if (quantity == 0) {
-          await _cartReference.doc(newProductId).delete();
+          await cartReference.doc(newProductId).delete();
         } else {
-          await _cartReference.doc(newProductId).update({'quantity': quantity});
+          await cartReference.doc(newProductId).update({'quantity': quantity});
         }
       }
     });
   }
 
   Future toggleFavorite(String productId) async {
-    DocumentSnapshot _documentSnapshot =
+    DocumentSnapshot documentSnapshot =
         await _instance.collection("users").doc(userId).get();
     Map<String, dynamic> userFavoritesData =
-        _documentSnapshot.data() as Map<String, dynamic>;
+        documentSnapshot.data() as Map<String, dynamic>;
     List favoritesList = userFavoritesData['favorites'];
     (favoritesList.contains(productId))
         ? favoritesList.remove(productId)
@@ -90,15 +90,15 @@ class FirestoreService {
 
   Future<List<String>> getLastTwoCartImages() async {
     List<String> imageUrls = [];
-    QuerySnapshot _querySnapshot = await _instance
+    QuerySnapshot querySnapshot = await _instance
         .collection("users")
         .doc(userId)
         .collection('cart')
         .orderBy('timeStamp', descending: true)
         .limit(2)
         .get();
-    for (int i = 0; i < _querySnapshot.docs.length; i++) {
-      String productId = _querySnapshot.docs.elementAt(i).id;
+    for (int i = 0; i < querySnapshot.docs.length; i++) {
+      String productId = querySnapshot.docs.elementAt(i).id;
       productId = productId.substring(productId.indexOf('0') + 2);
       if (double.tryParse(productId[0]) != null) {
         productId = productId.substring(1);
@@ -110,34 +110,34 @@ class FirestoreService {
   }
 
   Future addProduct(Product data, List<File> images) async {
-    DocumentReference _productReference = await _productsRef.add(data);
+    DocumentReference productReference = await _productsRef.add(data);
     for (int i = 0; i < images.length; i++) {
       Reference ref =
-          FirebaseStorage.instance.ref('products/${_productReference.id}/$i');
+          FirebaseStorage.instance.ref('products/${productReference.id}/$i');
       await ref.putFile(images[i]);
       String url = await ref.getDownloadURL();
       data.images!.add(url);
     }
-    DocumentSnapshot _documentSnapshot =
+    DocumentSnapshot documentSnapshot =
         await _instance.collection("users").doc(userId).get();
     Map<String, dynamic> userCreatedData =
-        _documentSnapshot.data() as Map<String, dynamic>;
+        documentSnapshot.data() as Map<String, dynamic>;
     List productsList = userCreatedData['products'] ?? [];
-    productsList.add(_productReference.id);
+    productsList.add(productReference.id);
     await _instance
         .collection('users')
         .doc(userId)
         .update({'products': productsList});
-    await _productReference.update({'images': data.images});
+    await productReference.update({'images': data.images});
   }
 
   Future deleteProduct(String productId) async {
     //delete images from storage
-    final _firebaseStorage = FirebaseStorage.instance;
+    final firebaseStorage = FirebaseStorage.instance;
     Product productData = await getProductDetails(productId);
     List imagesUrl = productData.images!;
     for (int i = 0; i < imagesUrl.length; i++) {
-      await _firebaseStorage.refFromURL(imagesUrl[i]).delete();
+      await firebaseStorage.refFromURL(imagesUrl[i]).delete();
     }
     //delete user data
     DocumentSnapshot documentSnapshot =

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>255539310592-r4in6p9drgu0uhvjhsfnh82hcuc7suth.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.255539310592-r4in6p9drgu0uhvjhsfnh82hcuc7suth</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>255539310592-aqrimrujt3nbv01t7n40fioa7ouu4o6a.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBVWnygHG83ani7G-QjaOKvswEECbuB4EQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>255539310592</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.aditya.sneakerx</string>
+	<key>PROJECT_ID</key>
+	<string>sneakerx-28e9d</string>
+	<key>STORAGE_BUCKET</key>
+	<string>sneakerx-28e9d.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:255539310592:ios:5e521a764449a6529b28e5</string>
+</dict>
+</plist>

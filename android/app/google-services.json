@@ -37,6 +37,13 @@
             {
               "client_id": "255539310592-t5qsv42lgq30dnnhbh4cu4uph3toiuq5.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "255539310592-r4in6p9drgu0uhvjhsfnh82hcuc7suth.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.aditya.sneakerx"
+              }
             }
           ]
         }

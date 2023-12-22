@@ -8,10 +8,10 @@ import 'package:provider/provider.dart';
 class Verification extends StatefulWidget {
   final Function toggleView;
 
-  const Verification({Key? key, required this.toggleView}) : super(key: key);
+  const Verification({super.key, required this.toggleView});
 
   @override
-  _VerificationState createState() => _VerificationState();
+  State<Verification> createState() => _VerificationState();
 }
 
 class _VerificationState extends State<Verification> {

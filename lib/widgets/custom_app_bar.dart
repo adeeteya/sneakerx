@@ -5,9 +5,9 @@ import 'package:sneakerx/services/firestore_service.dart';
 class CustomAppBar extends StatefulWidget {
   final String productId;
 
-  const CustomAppBar({Key? key, required this.productId}) : super(key: key);
+  const CustomAppBar({super.key, required this.productId});
   @override
-  _CustomAppBarState createState() => _CustomAppBarState();
+  State<CustomAppBar> createState() => _CustomAppBarState();
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {

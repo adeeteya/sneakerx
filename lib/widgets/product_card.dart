@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sneakerx/models/product_model.dart';
 import 'package:sneakerx/services/firestore_service.dart';
@@ -10,15 +9,14 @@ class ProductCard extends StatefulWidget {
   final Function showCartItems;
 
   const ProductCard(
-      {Key? key,
+      {super.key,
       required this.productId,
       required this.product,
       required this.isFavorite,
-      required this.showCartItems})
-      : super(key: key);
+      required this.showCartItems});
 
   @override
-  _ProductCardState createState() => _ProductCardState();
+  State<ProductCard> createState() => _ProductCardState();
 }
 
 class _ProductCardState extends State<ProductCard> {
