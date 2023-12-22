@@ -10,57 +10,57 @@ class ProductsView extends StatefulWidget {
   final List<DocumentSnapshot> productsSnapshot;
   final bool showFavorites;
   const ProductsView(
-      {Key? key, required this.productsSnapshot, required this.showFavorites})
-      : super(key: key);
+      {super.key, required this.productsSnapshot, required this.showFavorites});
 
   @override
-  _ProductsViewState createState() => _ProductsViewState();
+  State<ProductsView> createState() => _ProductsViewState();
 }
 
 class _ProductsViewState extends State<ProductsView> {
   final _firestoreInstance = FirestoreService();
   Future showCartItems() async {
-    List<String> imageUrls = await _firestoreInstance.getLastTwoCartImages();
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text('Cart', style: TextStyle(fontSize: 18)),
-          Row(
-            children: [
-              if (imageUrls.isNotEmpty)
-                CircleAvatar(backgroundImage: NetworkImage(imageUrls[0])),
-              const SizedBox(width: 8),
-              if (imageUrls.length == 2)
-                CircleAvatar(backgroundImage: NetworkImage(imageUrls[1])),
-              const SizedBox(width: 8),
-              Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: const Color(0xFFF68A0A)),
-                    shape: BoxShape.circle),
-                child: IconButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const CartPage()));
-                  },
-                  icon: const Icon(
-                    Icons.arrow_forward_rounded,
-                    color: Color(0xFFFAF5FC),
+    await _firestoreInstance.getLastTwoCartImages().then((value) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('Cart', style: TextStyle(fontSize: 18)),
+            Row(
+              children: [
+                if (value.isNotEmpty)
+                  CircleAvatar(backgroundImage: NetworkImage(value[0])),
+                const SizedBox(width: 8),
+                if (value.length == 2)
+                  CircleAvatar(backgroundImage: NetworkImage(value[1])),
+                const SizedBox(width: 8),
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: const Color(0xFFF68A0A)),
+                      shape: BoxShape.circle),
+                  child: IconButton(
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const CartPage()));
+                    },
+                    icon: const Icon(
+                      Icons.arrow_forward_rounded,
+                      color: Color(0xFFFAF5FC),
+                    ),
                   ),
                 ),
-              ),
-            ],
-          )
-        ],
-      ),
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      duration: const Duration(seconds: 3),
-      backgroundColor: const Color(0xFF1A191C),
-    ));
+              ],
+            )
+          ],
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        duration: const Duration(seconds: 3),
+        backgroundColor: const Color(0xFF1A191C),
+      ));
+    });
   }
 
   @override

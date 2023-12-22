@@ -5,10 +5,9 @@ class ImageSwipeView extends StatefulWidget {
   final String productId;
 
   const ImageSwipeView(
-      {Key? key, required this.imagesList, required this.productId})
-      : super(key: key);
+      {super.key, required this.imagesList, required this.productId});
   @override
-  _ImageSwipeViewState createState() => _ImageSwipeViewState();
+  State<ImageSwipeView> createState() => _ImageSwipeViewState();
 }
 
 class _ImageSwipeViewState extends State<ImageSwipeView> {

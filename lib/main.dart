@@ -3,12 +3,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:sneakerx/firebase_options.dart';
 import 'package:sneakerx/services/authentication_service.dart';
 import 'package:sneakerx/wrapper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
@@ -16,10 +17,10 @@ void main() async {
 }
 
 class App extends StatefulWidget {
-  const App({Key? key}) : super(key: key);
+  const App({super.key});
 
   @override
-  _AppState createState() => _AppState();
+  State<App> createState() => _AppState();
 }
 
 class _AppState extends State<App> {
@@ -50,7 +51,8 @@ class _AppState extends State<App> {
           scaffoldBackgroundColor: const Color(0xFFF4F5FC),
           elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
-            primary: const Color(0xFFF4F5FC),
+            foregroundColor: Colors.white,
+            backgroundColor: const Color(0xFFF4F5FC),
           )),
           primaryColor: const Color(0xFFF68A0A),
           fontFamily: "Futura",

@@ -4,9 +4,9 @@ class ColorRow extends StatefulWidget {
   final List? colors;
   final Function(int)? onSelected;
 
-  const ColorRow({Key? key, this.colors, this.onSelected}) : super(key: key);
+  const ColorRow({super.key, this.colors, this.onSelected});
   @override
-  _ColorRowState createState() => _ColorRowState();
+  State<ColorRow> createState() => _ColorRowState();
 }
 
 class _ColorRowState extends State<ColorRow> {

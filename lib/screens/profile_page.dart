@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sneakerx/models/menu_item.dart';
 import 'package:sneakerx/services/authentication_service.dart';
@@ -7,10 +6,10 @@ import 'package:sneakerx/services/firestore_service.dart';
 import 'package:sneakerx/widgets/uploaded_product_tile.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({super.key});
 
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
@@ -31,8 +30,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 TextButton(
                     onPressed: () async {
                       Navigator.pop(context);
-                      await AuthenticationService().signOut();
-                      Navigator.of(context).pop();
+                      await AuthenticationService()
+                          .signOut()
+                          .then((value) => Navigator.pop(context));
                     },
                     child: const Text("Yes"))
               ],
@@ -48,7 +48,7 @@ class _ProfilePageState extends State<ProfilePage> {
             color: const Color(0xFFF4F5FC),
             onSelected: (item) => onMenuItemSelected(context, item),
             itemBuilder: (context) => [
-              ...MenuItems.itemsList.map(buildItem).toList(),
+              ...MenuItems.itemsList.map(buildItem),
             ],
           ),
         ],

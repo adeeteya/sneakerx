@@ -7,10 +7,10 @@ import 'package:sneakerx/services/authentication_service.dart';
 class SignIn extends StatefulWidget {
   final Function toggleView;
 
-  const SignIn({Key? key, required this.toggleView}) : super(key: key);
+  const SignIn({super.key, required this.toggleView});
 
   @override
-  _SignInState createState() => _SignInState();
+  State<SignIn> createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
@@ -122,7 +122,7 @@ class _SignInState extends State<SignIn> {
                     height: 50,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          primary: const Color(0xFFF68A0A)),
+                          backgroundColor: const Color(0xFFF68A0A)),
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           setState(() {

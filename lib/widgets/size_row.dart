@@ -1,14 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SizeRow extends StatefulWidget {
   final List<int>? sizes;
   final Function(int)? onSelected;
 
-  const SizeRow({Key? key, required this.sizes, required this.onSelected})
-      : super(key: key);
+  const SizeRow({super.key, required this.sizes, required this.onSelected});
   @override
-  _SizeRowState createState() => _SizeRowState();
+  State<SizeRow> createState() => _SizeRowState();
 }
 
 class _SizeRowState extends State<SizeRow> {
@@ -38,6 +36,14 @@ class _SizeRowState extends State<SizeRow> {
                         _selectedSizePos = i;
                       });
                     },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: (i == _selectedSizePos)
+                            ? const Color(0xFFF68A0A)
+                            : const Color(0xFFF4F5FC),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 20, horizontal: 6),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20))),
                     child: Text(
                       "US ${widget.sizes![i]}",
                       style: TextStyle(
@@ -46,14 +52,6 @@ class _SizeRowState extends State<SizeRow> {
                               ? const Color(0xFFF4F5FC)
                               : const Color(0xFF1A191C)),
                     ),
-                    style: ElevatedButton.styleFrom(
-                        primary: (i == _selectedSizePos)
-                            ? const Color(0xFFF68A0A)
-                            : const Color(0xFFF4F5FC),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 20, horizontal: 6),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20))),
                   ),
                 )
             ],

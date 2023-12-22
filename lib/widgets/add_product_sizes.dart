@@ -6,10 +6,9 @@ class AddProductSizes extends StatefulWidget {
   final Function(int) removeSize;
 
   const AddProductSizes(
-      {Key? key, required this.addSize, required this.removeSize})
-      : super(key: key);
+      {super.key, required this.addSize, required this.removeSize});
   @override
-  _AddProductSizesState createState() => _AddProductSizesState();
+  State<AddProductSizes> createState() => _AddProductSizesState();
 }
 
 class _AddProductSizesState extends State<AddProductSizes> {

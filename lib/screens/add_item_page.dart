@@ -1,7 +1,5 @@
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:sneakerx/constants.dart';
 import 'package:sneakerx/models/product_model.dart';
 import 'package:sneakerx/services/firestore_service.dart';
@@ -10,10 +8,10 @@ import 'package:sneakerx/widgets/add_product_images.dart';
 import 'package:sneakerx/widgets/add_product_sizes.dart';
 
 class AddItemPage extends StatefulWidget {
-  const AddItemPage({Key? key}) : super(key: key);
+  const AddItemPage({super.key});
 
   @override
-  _AddItemPageState createState() => _AddItemPageState();
+  State<AddItemPage> createState() => _AddItemPageState();
 }
 
 class _AddItemPageState extends State<AddItemPage> {
@@ -154,7 +152,7 @@ class _AddItemPageState extends State<AddItemPage> {
                     height: 50,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          primary: const Color(0xFFF68A0A)),
+                          backgroundColor: const Color(0xFFF68A0A)),
                       onPressed: () async {
                         if (imagesList.isEmpty) {
                           _errorDialog("Please Insert Product Images");
@@ -167,14 +165,16 @@ class _AddItemPageState extends State<AddItemPage> {
                             _isLoading = true;
                           });
                           product.sizes?.sort();
-                          await _firestoreInstance.addProduct(
-                              product, imagesList);
-                          _isLoading = false;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content:
-                                      Text('Product Added to the Catalog')));
-                          Navigator.pop(context);
+                          await _firestoreInstance
+                              .addProduct(product, imagesList)
+                              .then((value) {
+                            _isLoading = false;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content:
+                                        Text('Product Added to the Catalog')));
+                            Navigator.pop(context);
+                          });
                         }
                       },
                       child: (_isLoading)

@@ -5,11 +5,10 @@ class AddProductColors extends StatefulWidget {
   final Function(int) removeColor;
 
   const AddProductColors(
-      {Key? key, required this.addColor, required this.removeColor})
-      : super(key: key);
+      {super.key, required this.addColor, required this.removeColor});
 
   @override
-  _AddProductColorsState createState() => _AddProductColorsState();
+  State<AddProductColors> createState() => _AddProductColorsState();
 }
 
 class _AddProductColorsState extends State<AddProductColors> {

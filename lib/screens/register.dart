@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +8,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
-  const Register({Key? key, required this.toggleView}) : super(key: key);
+  const Register({super.key, required this.toggleView});
 
   @override
-  _RegisterState createState() => _RegisterState();
+  State<Register> createState() => _RegisterState();
 }
 
 class _RegisterState extends State<Register> {
@@ -146,8 +144,8 @@ class _RegisterState extends State<Register> {
                                       TextSpan(
                                           recognizer: TapGestureRecognizer()
                                             ..onTap = () {
-                                              launch(
-                                                  "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+                                              launchUrl(Uri.parse(
+                                                  "https://www.youtube.com/watch?v=dQw4w9WgXcQ"));
                                             },
                                           text: "Terms of service",
                                           style: const TextStyle(
@@ -156,8 +154,8 @@ class _RegisterState extends State<Register> {
                                       TextSpan(
                                           recognizer: TapGestureRecognizer()
                                             ..onTap = () async {
-                                              launch(
-                                                  "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+                                              launchUrl(Uri.parse(
+                                                  "https://www.youtube.com/watch?v=dQw4w9WgXcQ"));
                                             },
                                           text: "Privacy policy",
                                           style: const TextStyle(
@@ -174,7 +172,7 @@ class _RegisterState extends State<Register> {
                           height: 50,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                primary: const Color(0xFFF68A0A)),
+                                backgroundColor: const Color(0xFFF68A0A)),
                             onPressed: !_agree
                                 ? null
                                 : () async {

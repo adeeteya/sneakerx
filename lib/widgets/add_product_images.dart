@@ -8,10 +8,9 @@ class AddProductImages extends StatefulWidget {
   final Function(int) removeImage;
 
   const AddProductImages(
-      {Key? key, required this.addImage, required this.removeImage})
-      : super(key: key);
+      {super.key, required this.addImage, required this.removeImage});
   @override
-  _AddProductImagesState createState() => _AddProductImagesState();
+  State<AddProductImages> createState() => _AddProductImagesState();
 }
 
 class _AddProductImagesState extends State<AddProductImages> {

@@ -1,16 +1,15 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sneakerx/models/product_model.dart';
 import 'package:sneakerx/services/firestore_service.dart';
 import 'package:sneakerx/widgets/cart_list_tile.dart';
 
 class CartPage extends StatefulWidget {
-  const CartPage({Key? key}) : super(key: key);
+  const CartPage({super.key});
 
   @override
-  _CartPageState createState() => _CartPageState();
+  State<CartPage> createState() => _CartPageState();
 }
 
 class _CartPageState extends State<CartPage> {
@@ -36,9 +35,9 @@ class _CartPageState extends State<CartPage> {
           }
           List<DocumentSnapshot> cartItemsSnapshot = snapshot.data!.docs;
           List<Map<String, dynamic>> cartItems = [];
-          int _noOfItems = cartItemsSnapshot.length;
-          if (_noOfItems == 0) _controller.sink.add(0);
-          int _total = 0;
+          int noOfItems = cartItemsSnapshot.length;
+          if (noOfItems == 0) _controller.sink.add(0);
+          int total = 0;
           for (int i = 0; i < cartItemsSnapshot.length; i++) {
             DocumentSnapshot cartItemSnapshot = cartItemsSnapshot[i];
             Map<String, dynamic> cartItem =
@@ -90,9 +89,9 @@ class _CartPageState extends State<CartPage> {
                             return Center(child: Text("${snapshot.error}"));
                           }
                           Product? product = snapshot.data;
-                          _total +=
+                          total +=
                               (product!.price * cartItem['quantity']) as int;
-                          _controller.sink.add(_total);
+                          _controller.sink.add(total);
                           return CartListTile(
                             productId: cartItem['productId'],
                             chosenSize: cartItem['chosenSize'],
@@ -131,19 +130,19 @@ class _CartPageState extends State<CartPage> {
                                     style: TextStyle(
                                         fontSize: 22,
                                         fontWeight: FontWeight.bold)),
-                                (_noOfItems == 0)
+                                (noOfItems == 0)
                                     ? const Text("\$0",
                                         style: TextStyle(
                                             fontSize: 22,
                                             fontWeight: FontWeight.bold))
-                                    : (_noOfItems == 1)
+                                    : (noOfItems == 1)
                                         ? Text(
-                                            "(${_noOfItems}item) \$${snapshot.data}",
+                                            "(${noOfItems}item) \$${snapshot.data}",
                                             style: const TextStyle(
                                                 fontSize: 22,
                                                 fontWeight: FontWeight.bold))
                                         : Text(
-                                            "(${_noOfItems}items) \$${snapshot.data}",
+                                            "(${noOfItems}items) \$${snapshot.data}",
                                             style: const TextStyle(
                                                 fontSize: 22,
                                                 fontWeight: FontWeight.bold))
@@ -157,11 +156,11 @@ class _CartPageState extends State<CartPage> {
                       margin: const EdgeInsets.symmetric(horizontal: 20),
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              primary: Colors.black,
+                              backgroundColor: Colors.black,
                               padding: const EdgeInsets.symmetric(vertical: 20),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(40))),
-                          onPressed: (_noOfItems == 0)
+                          onPressed: (noOfItems == 0)
                               ? null
                               : () {
                                   ScaffoldMessenger.of(context).showSnackBar(

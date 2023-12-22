@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sneakerx/models/product_model.dart';
 import 'package:sneakerx/services/firestore_service.dart';
@@ -6,10 +5,9 @@ import 'package:sneakerx/services/firestore_service.dart';
 class UploadedProductTile extends StatefulWidget {
   final String productId;
 
-  const UploadedProductTile({Key? key, required this.productId})
-      : super(key: key);
+  const UploadedProductTile({super.key, required this.productId});
   @override
-  _UploadedProductTileState createState() => _UploadedProductTileState();
+  State<UploadedProductTile> createState() => _UploadedProductTileState();
 }
 
 class _UploadedProductTileState extends State<UploadedProductTile> {
